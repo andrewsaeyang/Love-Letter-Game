@@ -9,7 +9,7 @@ public class DeckBuilder {
 
         //File lootletter = new File("C:\\Users\\a09sa\\Desktop\\Java Projects\\Love Letter\\cardlist2.txt");
         //File vanilla = new File("C:\\Users\\a09sa\\Desktop\\Java Projects\\Love Letter\\cardlist.txt");
-		File vanilla = new File("C:\\Users\\a09sa\\eclipse-workspace\\LoveLetter\\Lover Letter Deck");
+		File vanilla = new File("C:\\Users\\a09sa\\eclipse-workspace\\LoveLetter\\Lover Letter Deck.txt");
 
         System.out.print('\u000C'); //clears console so it's not annoying lol
         Card[] deck = new Card[16]; // initiate the deck array
