@@ -4,7 +4,8 @@ import java.util.Scanner;
 import java.util.Random;
 public class DeckBuilder {
 
-	public static void main(String args[]) throws IOException
+	//THIS FILE ISNT NEEDED ANY MORE
+	public static void main(String[] args) throws IOException
 	{
 
 		//File lootletter = new File("C:\\Users\\a09sa\\Desktop\\Java Projects\\Love Letter\\cardlist2.txt");
@@ -65,9 +66,9 @@ public class DeckBuilder {
 		}
 		file.close(); //gotta close them files!
 
-		// printDeckIndex(deck);
-		//System.out.println(); // Spaces out line in the prompt
-		// System.out.println("===================================================================");
+		printDeckIndex(deck);
+		System.out.println(); // Spaces out line in the prompt
+		System.out.println("===================================================================");
 
 		//Now that the deck[] array is built, time to shuffle!
 		for(int i = 0; i < Math.random()*5;i++) {
@@ -78,7 +79,7 @@ public class DeckBuilder {
 		}
 
 		//checking randomness of deck
-		//printDeckIndex(gameDeck); 
+		printDeckIndex(gameDeck); 
 
 		//printDeckIndex(deck);
 
