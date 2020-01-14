@@ -1,17 +1,48 @@
 import java.io.*;
-import java.util.Scanner;
+import java.util.InputMismatchException;
 import java.util.Random;
+import java.util.Scanner;
+
 
 public class Game {
 	public static void main(String[] args) throws IOException
 	{
 
+		
+		Scanner numObj = new Scanner(System.in);
+		int numPlayer=0;
+		
+		//Asks the player for how many people are playing and validates
+		do {
+			System.out.println("How many players yo? Enter a number between 2-4.");
+			
+			try {
+				numPlayer = numObj.nextInt();
+				if(numPlayer <2 || numPlayer >4) {
+					System.out.println("Not a valid number!!!");
+				}
+			}
+			catch(InputMismatchException e){
+				System.out.println("That wasnt a number yo...");
+				numObj.next();
+			}
+		}while(numPlayer == 2 || numPlayer == 3 || numPlayer == 4); {
+			System.out.println("number of players is " + numPlayer);
+			
+			}
+			
+		
+		
+		
+		
 		/*
-		 * GAME SET UP
+		 * DECK SET UP
 		 */
 		
-		File vanilla = new File("C:\\Users\\Blue Fox\\git\\Love-Letter-Game\\LoveLetter\\LLDeck.txt");
-
+		//File vanilla = new File("C:\\Users\\Blue Fox\\git\\Love-Letter-Game\\LoveLetter\\LLDeck.txt"); //for Laptop
+		File vanilla = new File("C:\\Users\\a09sa\\git\\Love-Letter-Game\\LoveLetter\\LLDeck.txt"); //for PC
+		
+		
 		Card[] deck = new Card[16]; // initiate the deck array
 		Card[] gameDeck = new Card[16];
 		//deck = buildDeck();
@@ -58,21 +89,21 @@ public class Game {
 		}
 		file.close(); //gotta close them files!
 
-		printDeckIndex(deck);
-		System.out.println(); // Spaces out line in the prompt
-		System.out.println("===================================================================");
+		//printDeckIndex(deck);
+		//System.out.println(); // Spaces out line in the prompt
+		//System.out.println("===================================================================");
 
 		//Now that the deck[] array is built, time to shuffle!
 
 		gameDeck = shuffleDeck(deck);
 
 		//checking randomness of deck
-		printDeckIndex(gameDeck); 
+		//printDeckIndex(gameDeck); 
 
 		//printDeckIndex(deck);
 
 		/*
-		 * GAME SETUP DONE
+		 * DECK SET UP DONE
 		 */
 
 
