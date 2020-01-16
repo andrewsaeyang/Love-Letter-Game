@@ -8,6 +8,11 @@ public class Game {
 	public static void main(String[] args) throws IOException
 	{
 
+		/*
+		 * NUMBER OF PLAYER SET UP
+		 * WIP: default name (ie press enter to auto set as Player1, Player2...etc
+		 * better description of exception handling (ie "that was latter not number)
+		 */
 		
 		Scanner numObj = new Scanner(System.in);
 		int numPlayer=0;
@@ -26,13 +31,15 @@ public class Game {
 				System.out.println("That wasnt a number yo...");
 				numObj.next();
 			}
-		}while(numPlayer == 2 || numPlayer == 3 || numPlayer == 4); {
+		}while(!(numPlayer == 2 || numPlayer == 3 || numPlayer == 4)); {
 			System.out.println("number of players is " + numPlayer);
 			
 			}
 			
 		
-		
+		/*
+		 * NUMBER OF PLAYER SET UP DONE
+		 */
 		
 		
 		/*
@@ -148,6 +155,32 @@ public static void buildDeck() {
 		 */
 		return z;
 	}
+	//Name a non-Guard card and choose another player. If that player has that card, he or she is out of the round
+	public static void playGaurd() {}
+	
+	//Look at another player's hand
+	public static void playPriest() {}
+	
+	//You and another player secretly compare hands. The player with the lower value is out of the round
+	public static void playBaron() {}
+	
+	//Until your next turn, ignore all effects from other player's cards
+	public static void playHandmaid() {}
+	
+	//Choose any player (including yourself) to discard his or her hand and draw a new card
+	public static void playPrince() {}
+	
+	//Trade hands with another player of your choice
+	public static void playKing() {}
+	
+	//If you have this card and the King or Prince is in your hand, you must discard this card
+	public static void playCountess() {}
+	
+	// if you discard this card, you are out of the round
+	public static void playPrincess() {}
 }
+
+
+
 
 

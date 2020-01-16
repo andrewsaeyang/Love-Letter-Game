@@ -1,5 +1,7 @@
 
 public class Player {
+	private boolean handmaid = false;
+	private boolean stillInRound = true;
 	private String playerName;
 	private int playerPoints;
 	private Card[] playerHand = new Card[2];
