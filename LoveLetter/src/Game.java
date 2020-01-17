@@ -2,6 +2,7 @@ import java.io.*;
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Stack;
 
 
 public class Game {
@@ -46,12 +47,14 @@ public class Game {
 		 * DECK SET UP
 		 */
 		
+		
+		
 		//File vanilla = new File("C:\\Users\\Blue Fox\\git\\Love-Letter-Game\\LoveLetter\\LLDeck.txt"); //for Laptop
 		File vanilla = new File("C:\\Users\\a09sa\\git\\Love-Letter-Game\\LoveLetter\\LLDeck.txt"); //for PC
 		
 		
 		Card[] deck = new Card[16]; // initiate the deck array
-		Card[] gameDeck = new Card[16];
+		Stack<Card> gameDeck = new Stack<Card>();
 		//deck = buildDeck();
 
 		Scanner file = new Scanner(vanilla);
@@ -101,20 +104,73 @@ public class Game {
 		//System.out.println("===================================================================");
 
 		//Now that the deck[] array is built, time to shuffle!
-
-		gameDeck = shuffleDeck(deck);
-
-		//checking randomness of deck
-		//printDeckIndex(gameDeck); 
-
+		deck = shuffleDeck(deck);
 		//printDeckIndex(deck);
-
+		
+		//Put the deck into a stack
+		for(int i = deck.length; i >0; i--) {
+			gameDeck.push(deck[i-1]);
+			//System.out.println(gameDeck.peek().toString());
+			
+		}
+		
+		
+		
+		
 		/*
 		 * DECK SET UP DONE
 		 */
 
+		/*
+		 * GAME START
+		 * 
+		 * 
+		 * Steps brain storming:
+		 * use numPLayer to build the active players into array
+		 * deal to players in the array
+		 * 
+		 * 
+		 * 
+		 */
+
+		boolean gameState = true;
+		boolean roundState = true;
+		
+		/*
+		 * Main loop for the game structure. 
+		 * This level will take care of re-shuffling of the deck, resetting player state to active, and burning cards
+		 * before looping through it will check if any players have hit the win condition
+		 */
+		while(gameState == true) {
+			
+			
+			
+			/*
+			 * this loop will be the the bulk of the playing 
+			 * this level includes: drawing from the deck, playing cards and eliminating players in order to give player points
+			 * before looping through it will check if there is at least 2 players playing
+			 */
+			while(roundState == true) {
+				
+				
+				
+			}
+			
+		
+			
+			
+		}
+		
+		/*
+		 * GAME DONE
+		 */
+		
+		
 
 	}
+	
+	
+	
 public static void buildDeck() {
 	
 }
