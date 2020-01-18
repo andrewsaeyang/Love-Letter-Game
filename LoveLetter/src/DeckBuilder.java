@@ -1,6 +1,7 @@
 
 import java.io.*;
 import java.util.Scanner;
+import java.util.Stack;
 import java.util.Random;
 public class DeckBuilder {
 
@@ -8,12 +9,11 @@ public class DeckBuilder {
 	public static void main(String[] args) throws IOException
 	{
 
-		//File lootletter = new File("C:\\Users\\a09sa\\Desktop\\Java Projects\\Love Letter\\cardlist2.txt");
-		//File vanilla = new File("C:\\Users\\a09sa\\Desktop\\Java Projects\\Love Letter\\cardlist.txt");
-		File vanilla = new File("C:\\Users\\Blue Fox\\git\\Love-Letter-Game\\LoveLetter\\LLDeck.txt");
+		File vanilla = new File("LLDeck.txt");
+
 
 		Card[] deck = new Card[16]; // initiate the deck array
-		Card[] gameDeck = new Card[16];
+		Stack<Card> gameDeck = new Stack<Card>();
 		//deck = buildDeck();
 
 		Scanner file = new Scanner(vanilla);
@@ -25,14 +25,6 @@ public class DeckBuilder {
 		String cardName =" ";
 		String cardDescription = " ";
 
-		/*
-		 * TEST CODE
-		 * 
-		 * int p = Integer.parseInt(file.next());          
-		 * int q = Integer.parseInt(file.next());
-		 * String n = file.next();
-		 * String d = file.next();
-		 */
 
 		//Card guard = new Card(p,q,n,d); //Card obj constructor
 
@@ -66,22 +58,24 @@ public class DeckBuilder {
 		}
 		file.close(); //gotta close them files!
 
-		printDeckIndex(deck);
-		System.out.println(); // Spaces out line in the prompt
-		System.out.println("===================================================================");
+		//printDeckIndex(deck);
+		//System.out.println(); // Spaces out line in the prompt
+		//System.out.println("===================================================================");
 
 		//Now that the deck[] array is built, time to shuffle!
-		for(int i = 0; i < Math.random()*5;i++) {
-			gameDeck = shuffleDeck(deck);
-			gameDeck = shuffleDeck(deck);
-			gameDeck = shuffleDeck(deck);
-			//System.out.println("shuffled");
-		}
-
-		//checking randomness of deck
-		printDeckIndex(gameDeck); 
-
+		deck = shuffleDeck(deck);
 		//printDeckIndex(deck);
+		
+		//Put the deck into a stack
+		for(int i = deck.length; i >0; i--) {
+			gameDeck.push(deck[i-1]);
+			System.out.println(gameDeck.peek().toString());
+			
+		}
+		
+		
+		
+		
 
 		/*
 		 * GAME SETUP DONE

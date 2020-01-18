@@ -1,4 +1,6 @@
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
@@ -47,12 +49,9 @@ public class Game {
 		 * DECK SET UP
 		 */
 		
-		
-		
-		//File vanilla = new File("C:\\Users\\Blue Fox\\git\\Love-Letter-Game\\LoveLetter\\LLDeck.txt"); //for Laptop
-		File vanilla = new File("C:\\Users\\a09sa\\git\\Love-Letter-Game\\LoveLetter\\LLDeck.txt"); //for PC
-		
-		
+		File vanilla = new File("LLDeck.txt");
+
+
 		Card[] deck = new Card[16]; // initiate the deck array
 		Stack<Card> gameDeck = new Stack<Card>();
 		//deck = buildDeck();
