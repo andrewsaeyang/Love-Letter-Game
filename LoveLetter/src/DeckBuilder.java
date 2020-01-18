@@ -5,8 +5,7 @@ import java.util.Stack;
 import java.util.Random;
 public class DeckBuilder {
 
-	//THIS FILE ISNT NEEDED ANY MORE
-	public static void main(String[] args) throws IOException
+	public static Stack<Card> buildDeck() throws IOException
 	{
 
 		File vanilla = new File("LLDeck.txt");
@@ -82,7 +81,7 @@ public class DeckBuilder {
 		 */
 
 
-
+return gameDeck;
 
 	}
 

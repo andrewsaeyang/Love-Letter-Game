@@ -1,6 +1,4 @@
 import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
@@ -46,80 +44,12 @@ public class Game {
 		
 		
 		/*
-		 * DECK SET UP
+		 * build a deck~~~
 		 */
 		
-		File vanilla = new File("LLDeck.txt");
-
-
-		Card[] deck = new Card[16]; // initiate the deck array
-		Stack<Card> gameDeck = new Stack<Card>();
-		//deck = buildDeck();
-
-		Scanner file = new Scanner(vanilla);
-		file.useDelimiter("<"); //my delimiter used
-
-		int b = 0; //Counter holder I think?
-		int cardNum = 0;
-		int cardQuantity = 0;
-		String cardName =" ";
-		String cardDescription = " ";
-
-
-		//Card guard = new Card(p,q,n,d); //Card obj constructor
-
-		/*This while loops is able to build an array of card objects
-		 *while while pulling them from the text file
-		 */
-		while(file.hasNext()){
-
-			cardNum = file.nextInt();
-			cardQuantity = file.nextInt();
-			cardName = file.next();
-			cardDescription = file.nextLine();
-
-			/*
-			 * This for loop is creating the multiple copies of the cards with variable "q" being quantity
-			 */
-			for(int x = 0; x < cardQuantity; x++ ){
-				deck[b] = new Card(cardNum,cardQuantity,cardName,cardDescription);                
-				//System.out.println(deck[i].toString()); //Testing if building card works                
-				b++;
-			}
-
-			/* 
-			 * TEST CODE
-			 */
-			//System.out.print(file.next()+" ");//Card power
-			//System.out.print(file.next()+" ");// number of cards
-			//System.out.print(file.next()+" ");//name
-			//System.out.println(file.next());//description
-
-		}
-		file.close(); //gotta close them files!
-
-		//printDeckIndex(deck);
-		//System.out.println(); // Spaces out line in the prompt
-		//System.out.println("===================================================================");
-
-		//Now that the deck[] array is built, time to shuffle!
-		deck = shuffleDeck(deck);
-		//printDeckIndex(deck);
-		
-		//Put the deck into a stack
-		for(int i = deck.length; i >0; i--) {
-			gameDeck.push(deck[i-1]);
-			//System.out.println(gameDeck.peek().toString());
-			
-		}
+		Stack<Card> gameDeck = DeckBuilder.buildDeck();
 		
 		
-		
-		
-		/*
-		 * DECK SET UP DONE
-		 */
-
 		/*
 		 * GAME START
 		 * 
