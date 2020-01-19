@@ -64,24 +64,24 @@ public class DeckBuilder {
 		//Now that the deck[] array is built, time to shuffle!
 		deck = shuffleDeck(deck);
 		//printDeckIndex(deck);
-		
+
 		//Put the deck into a stack
 		for(int i = deck.length; i >0; i--) {
 			gameDeck.push(deck[i-1]);
 			//System.out.println(gameDeck.peek().toString());
-			
+
 		}
-		
-		
-		
-		
+
+
+
+
 
 		/*
 		 * GAME SETUP DONE
 		 */
 
 
-return gameDeck;
+		return gameDeck;
 
 	}
 

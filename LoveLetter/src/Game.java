@@ -10,20 +10,19 @@ public class Game {
 	{
 
 
-		//Asks the player for how many people are playing and validates
-		int numOfPlayers = getNumberofPLayers();
-		
-		Player[] playerList = playerList(numOfPlayers);
-		
-		Stack<Card> gameDeck = DeckBuilder.buildDeck();	//Builds the deck
-	
 
-		
+		int nPlayers = getNumberofPLayers(); //Asks the player for how many people are playing and validates
+
+		Player[] playerList = playerList(nPlayers); //creates the array storing player data for game
+
+		Stack<Card> gameDeck = DeckBuilder.buildDeck();	//Builds the deck
+
+
+
 
 
 		/*
 		 * GAME START
-		 * 
 		 * 
 		 * Steps brain storming:
 		 * use numPLayer to build the active players into array
@@ -42,10 +41,12 @@ public class Game {
 
 		boolean gameState = true;
 		boolean roundState = true;
-		
-		
+
+
 
 		while(gameState == false) {
+			//Deal to players
+
 
 			/*
 			 * this loop will be the the bulk of the playing 
@@ -53,8 +54,31 @@ public class Game {
 			 * before looping through it will check if there is at least 2 players playing
 			 */
 			while(roundState == false) {
+				//player draws a card
+				//player plays a card
+
+
+
+				/*
+				 * Round clean up:
+				 * -check to see if more than 2 players remain in round
+				 * -check to see if there are cards remaining in the deck
+				 * -push cards in player array to the left (if possible)
+				 * 
+				 */
 
 			}
+
+			/*
+			 * Game clean up:
+			 * -Award round winner point
+			 * -Check game winning condition
+			 * --if winner applicable, announce winner
+			 * -Shuffle deck
+			 * -Deal new card
+			 * -Reset player info(still in round status, hand maid status, hand)
+			 * -display leader board
+			 */
 		}
 	}
 
@@ -65,19 +89,19 @@ public class Game {
 
 
 
-public static Player[] playerList(int n) {
-	Scanner name = new Scanner(System.in);
-	Player[] p = new Player[n];
-	for (int i=0; i< n; i++) {
-		
-		System.out.println("What is the name of player " + (i+1));
-		//Ask for Player name
-		p[i] = new Player(name.next());
+	public static Player[] playerList(int n) {
+		Scanner name = new Scanner(System.in);
+		Player[] p = new Player[n];
+		for (int i=0; i< n; i++) {
+
+			System.out.println("What is the name of player " + (i+1));
+			//Ask for Player name
+			p[i] = new Player(name.next());
+		}
+		name.close();
+		return p;
+
 	}
-	name.close();
-	return p;
-	
-}
 
 
 	public static int getNumberofPLayers() {
@@ -140,29 +164,37 @@ public static Player[] playerList(int n) {
 		 */
 		return z;
 	}
+	
 	//Name a non-Guard card and choose another player. If that player has that card, he or she is out of the round
-	public static void playGaurd() {}
+	public static void playGaurd(Player t) {}
 
 	//Look at another player's hand
-	public static void playPriest() {}
+	public static void playPriest(Player t) {
+		System.out.println(t.getPlayerName() + "has the "+ t.getPlayerHand()[0].getName());
+	}
 
 	//You and another player secretly compare hands. The player with the lower value is out of the round
-	public static void playBaron() {}
+	public static void playBaron(Player p, Player t) {}
 
 	//Until your next turn, ignore all effects from other player's cards
-	public static void playHandmaid() {}
+	public static void playHandmaid(Player p) {
+		p.handmaid();
+	}
 
 	//Choose any player (including yourself) to discard his or her hand and draw a new card
-	public static void playPrince() {}
+	public static void playPrince(Player t) {}
 
 	//Trade hands with another player of your choice
-	public static void playKing() {}
+	public static void playKing(Player p, Player t) {}
 
 	//If you have this card and the King or Prince is in your hand, you must discard this card
-	public static void playCountess() {}
+	public static void playCountess(Player p) {	}
 
 	// if you discard this card, you are out of the round
-	public static void playPrincess() {}
+	public static void playPrincess(Player p) {
+		p.out();
+	}
+	
 }
 
 

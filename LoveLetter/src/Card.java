@@ -17,7 +17,7 @@ public class Card {
 		cardName = n;
 		cardDesc = d;        
 	}
-	
+
 	public Card() {
 	};
 
