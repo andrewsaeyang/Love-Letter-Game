@@ -68,7 +68,7 @@ public class DeckBuilder {
 		//Put the deck into a stack
 		for(int i = deck.length; i >0; i--) {
 			gameDeck.push(deck[i-1]);
-			System.out.println(gameDeck.peek().toString());
+			//System.out.println(gameDeck.peek().toString());
 			
 		}
 		
