@@ -12,10 +12,13 @@ public class Game {
 
 		//Asks the player for how many people are playing and validates
 		int numOfPlayers = getNumberofPLayers();
+		
+		Player[] playerList = playerList(numOfPlayers);
+		
+		Stack<Card> gameDeck = DeckBuilder.buildDeck();	//Builds the deck
+	
 
-		//Builds the deck
-
-		Stack<Card> gameDeck = DeckBuilder.buildDeck();
+		
 
 
 		/*
@@ -39,18 +42,8 @@ public class Game {
 
 		boolean gameState = true;
 		boolean roundState = true;
-		Scanner name = new Scanner(System.in);
-		Player[] playerList = new Player[numOfPlayers]; 
-
-		for (int i=0; i< numOfPlayers; i++) {
-			System.out.println("What is the name of player " + (i+1));
-
-			//Ask for Player name
-			String pName = name.next();
-
-			playerList[i] = new Player(pName);
-			System.out.println(playerList[i].toString());
-		}
+		
+		
 
 		while(gameState == false) {
 
@@ -71,6 +64,20 @@ public class Game {
 
 
 
+
+public static Player[] playerList(int n) {
+	Scanner name = new Scanner(System.in);
+	Player[] p = new Player[n];
+	for (int i=0; i< n; i++) {
+		
+		System.out.println("What is the name of player " + (i+1));
+		//Ask for Player name
+		p[i] = new Player(name.next());
+	}
+	name.close();
+	return p;
+	
+}
 
 
 	public static int getNumberofPLayers() {
