@@ -6,6 +6,7 @@ public class Player {
 	private int playerPoints;
 	private Card[] playerHand = new Card[2];
 
+	
 
 	public Player(String n) {
 		playerName = n;

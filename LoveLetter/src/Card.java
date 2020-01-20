@@ -6,6 +6,7 @@ public class Card {
 	private String cardName; 
 	private String cardDesc; 
 
+	
 	/**
 	 * Constructor for objects of class Card
 	 */
