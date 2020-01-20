@@ -6,20 +6,18 @@ import java.util.Stack;
 
 
 public class Game {
-	public static void main(String[] args) throws IOException
+	public static void main(String[] args) throws IOException, InterruptedException
 	{
 
 
 
-		int nPlayers = getNumberofPLayers(); //Asks the player for how many people are playing and validates
+		//int nPlayers = getNumberofPLayers(); //Asks the player for how many people are playing and validates
+		//Player[] playerList = playerList(nPlayers); //creates the array storing player data for game
 
-		Player[] playerList = playerList(nPlayers); //creates the array storing player data for game
 
+		int nPlayers = 2;
+		Player[] player = tempPlayer();
 		Stack<Card> gameDeck = DeckBuilder.buildDeck();	//Builds the deck
-
-
-
-
 
 		/*
 		 * GAME START
@@ -28,10 +26,7 @@ public class Game {
 		 * use numPLayer to build the active players into array
 		 * deal to players in the array
 		 * 
-		 * 
 		 */
-
-
 
 		/*
 		 * Main loop for the game structure. 
@@ -41,22 +36,54 @@ public class Game {
 
 		boolean gameState = true;
 		boolean roundState = true;
+		int turnMarker = 0;
 
+		while(gameState == true) {
+			burnCard(gameDeck, nPlayers); // number of cards burned depends on the number of players
 
-
-		while(gameState == false) {
-			//Deal to players
-
+			for (int i=0; i<nPlayers; i++) {
+				player[i].setPlayerHand(gameDeck.pop(), 0); //puts the top card of the deck into each players hand
+			}
 
 			/*
 			 * this loop will be the the bulk of the playing 
 			 * this level includes: drawing from the deck, playing cards and eliminating players in order to give player points
 			 * before looping through it will check if there is at least 2 players playing
 			 */
-			while(roundState == false) {
-				//player draws a card
-				//player plays a card
 
+
+			while(roundState == true) {
+
+				Scanner scanner = new Scanner(System.in);
+				int choice = 0;
+				System.out.println("It's " + player[turnMarker].getName() + "'s turn.");
+				System.out.println("");
+				player[turnMarker].setPlayerHand(gameDeck.pop(), 1);
+				player[turnMarker].printPlayerHand();
+				System.out.println("");
+
+
+				do {
+					System.out.println("Which card would you like to play?");
+					System.out.println("Card 1 or 2?");
+
+					try {
+						choice = scanner.nextInt();
+						if(!(choice == 2 || choice == 1)) {
+							System.out.println("Not a valid choice!!!");
+							System.out.println("Please choose 1 or 2.");
+						}
+					}
+					catch(InputMismatchException e){
+						System.out.println("That wasnt a number yo...");
+						scanner.next();
+					}
+				}while(!(choice == 2 || choice == 1)); {
+					
+					//return numPlayer;
+				}	
+
+				playCard(player[turnMarker], choice-1);
 
 
 				/*
@@ -68,7 +95,7 @@ public class Game {
 				 */
 
 			}
-
+			break;
 			/*
 			 * Game clean up:
 			 * -Award round winner point
@@ -82,12 +109,13 @@ public class Game {
 		}
 	}
 
-	/*
-	 * GAME DONE
-	 */
 
-
-
+	private static Player[] tempPlayer() {
+		Player[] p = new Player[2];
+		p[0] = new Player("Andrew");
+		p[1] = new Player("Josh");
+		return p;
+	}
 
 	public static Player[] playerList(int n) {
 		Scanner name = new Scanner(System.in);
@@ -100,9 +128,18 @@ public class Game {
 		}
 		name.close();
 		return p;
-
 	}
 
+	public static void burnCard(Stack<Card> n, int p) {
+
+		if( p == 2) {
+			for (int i=0; i <4;i++) {
+				n.pop();
+			}
+		}else {
+			n.pop();
+		}
+	}
 
 	public static int getNumberofPLayers() {
 		int numPlayer = 0;
@@ -124,9 +161,8 @@ public class Game {
 			//numObj.close();
 			return numPlayer;
 		}	
-	} static void buildDeck() {
+	} 
 
-	}
 	//prints out what card is in each index
 	public static void printDeckIndex (Card[] z){
 		for(int i = 0; i < 16;i++){
@@ -164,13 +200,56 @@ public class Game {
 		 */
 		return z;
 	}
-	
+
+
+	private static void playCard(Player player, int c) {
+		// TODO Auto-generated method stub
+		
+		
+		switch(player.getPlayerHand()[c].getVal()) {
+
+		case 1:
+			System.out.println("Card is Guard");
+			break;
+
+		case 2:
+			System.out.println("Card is Priest");
+			break;
+
+		case 3:
+			System.out.println("Card is Baron");
+			break;
+
+		case 4:
+			System.out.println("Card is Handmaid");
+			break;
+
+		case 5:
+			System.out.println("Card is Prince");
+			break;
+
+		case 6:
+			System.out.println("Card is King");
+			break;
+
+		case 7:
+			System.out.println("Card is Countess");
+			break;
+
+		case 8:
+			System.out.println("Card is Princess");
+			break;
+
+
+		}
+	}
+
 	//Name a non-Guard card and choose another player. If that player has that card, he or she is out of the round
 	public static void playGaurd(Player t) {}
 
 	//Look at another player's hand
 	public static void playPriest(Player t) {
-		System.out.println(t.getPlayerName() + "has the "+ t.getPlayerHand()[0].getName());
+		System.out.println(t.getName() + "has the "+ t.getPlayerHand()[0].getName());
 	}
 
 	//You and another player secretly compare hands. The player with the lower value is out of the round
@@ -194,7 +273,7 @@ public class Game {
 	public static void playPrincess(Player p) {
 		p.out();
 	}
-	
+
 }
 
 

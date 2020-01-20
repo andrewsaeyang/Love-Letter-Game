@@ -31,6 +31,11 @@ public class Card {
 		return cardName + " has a value of " + cardVal + " with " + cardQuan + " number of card(s) in the deck. ";
 	}
 
+	public String info() {
+		
+		return cardName + ". "+ cardDesc;
+	}
+	
 	public int getVal()
 	{
 		return cardVal;

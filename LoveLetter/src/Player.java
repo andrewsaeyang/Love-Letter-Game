@@ -14,8 +14,8 @@ public class Player {
 		stillInRound = true;
 
 	}
-
-	public String getPlayerName() {
+	
+	public String getName() {
 		return playerName;
 	}
 	public void setPlayerName(String n) {
@@ -25,28 +25,39 @@ public class Player {
 	public int getPlayerPoints() {
 		return playerPoints;
 	}
-	
+
 	public void setPlayerPoints(String p) {
 		playerName = p;
 	}
-	
+
 	public void handmaid() {
 		handmaid = true;
 	}
 	public boolean getHandmaid() {
 		return handmaid;
 	}
-	
+
 	public boolean getRoundInfo() {
 		return stillInRound;
 	}
-	
+
 	public void out() {
 		stillInRound = false;
 	}
 
 	public Card[] getPlayerHand() {
 		return playerHand;
+	}
+	public void printPlayerHand() {
+		for (int i=0; i< playerHand.length; i++) {
+			if (playerHand[i] == null) {
+				System.out.println("[X]");
+			}else {
+				System.out.println(playerHand[i].info());
+			}
+		}
+		
+		
 	}
 	//index 0 will be player current hand, index 1 is new card
 	public void setPlayerHand(Card n, int slot) {
@@ -56,7 +67,7 @@ public class Player {
 	public void win() {
 		playerPoints++;
 	}
-	
+
 	public void reset() {
 		handmaid = false;
 		stillInRound = true;
