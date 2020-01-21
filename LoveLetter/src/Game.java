@@ -51,7 +51,7 @@ public class Game {
 			 * before looping through it will check if there is at least 2 players playing
 			 */
 
-			
+
 
 			while(roundState == true) {
 
@@ -80,7 +80,7 @@ public class Game {
 						scanner.next();
 					}
 				}while(!(choice == 2 || choice == 1)); {
-					
+
 					//return numPlayer;
 				}	
 
@@ -204,9 +204,31 @@ public class Game {
 
 
 	private static void playCard(Player player, int c) {
-		// TODO Auto-generated method stub
-		
-		
+		/*
+		 * //Name a non-Guard card and choose another player. If that player has that card, he or she is out of the round
+	public static void playGaurd(Player t) {}
+
+	//Look at another player's hand
+	public static void playPriest(Player t) {
+		System.out.println(t.getName() + "has the "+ t.getPlayerHand()[0].getName());
+	}
+
+	//You and another player secretly compare hands. The player with the lower value is out of the round
+	public static void playBaron(Player p, Player t) {}
+
+	//Choose any player (including yourself) to discard his or her hand and draw a new card
+	public static void playPrince(Player t) {}
+
+	//Trade hands with another player of your choice
+	public static void playKing(Player p, Player t) {}
+
+	//If you have this card and the King or Prince is in your hand, you must discard this card
+	public static void playCountess(Player p) {	}
+
+		 * 
+		 */
+
+
 		switch(player.getPlayerHand()[c].getVal()) {
 
 		case 1:
@@ -222,7 +244,8 @@ public class Game {
 			break;
 
 		case 4:
-			System.out.println("Card is Handmaid");
+			System.out.println("Card is Handmaid"); //Until your next turn, ignore all effects from other player's cards
+			player.handmaid();
 			break;
 
 		case 5:
@@ -238,43 +261,20 @@ public class Game {
 			break;
 
 		case 8:
-			System.out.println("Card is Princess");
+			System.out.println("Card is Princess"); // if you discard this card, you are out of the round
+			player.out();
 			break;
 
 
 		}
+		System.out.println();
+
+		if (c==0) {
+			player.getPlayerHand()[0] = player.getPlayerHand()[1]; // Cards are always dealt to [1] so it just shifts it over if needed
+		}
+		
 	}
-
-	//Name a non-Guard card and choose another player. If that player has that card, he or she is out of the round
-	public static void playGaurd(Player t) {}
-
-	//Look at another player's hand
-	public static void playPriest(Player t) {
-		System.out.println(t.getName() + "has the "+ t.getPlayerHand()[0].getName());
-	}
-
-	//You and another player secretly compare hands. The player with the lower value is out of the round
-	public static void playBaron(Player p, Player t) {}
-
-	//Until your next turn, ignore all effects from other player's cards
-	public static void playHandmaid(Player p) {
-		p.handmaid();
-	}
-
-	//Choose any player (including yourself) to discard his or her hand and draw a new card
-	public static void playPrince(Player t) {}
-
-	//Trade hands with another player of your choice
-	public static void playKing(Player p, Player t) {}
-
-	//If you have this card and the King or Prince is in your hand, you must discard this card
-	public static void playCountess(Player p) {	}
-
-	// if you discard this card, you are out of the round
-	public static void playPrincess(Player p) {
-		p.out();
-	}
-
+	
 }
 
 
