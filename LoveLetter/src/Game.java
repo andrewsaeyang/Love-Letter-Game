@@ -16,7 +16,7 @@ public class Game {
 
 
 		int nPlayers = 2;
-		Player[] player = tempPlayer();
+		Player[] players = tempPlayer();
 		Stack<Card> gameDeck = DeckBuilder.buildDeck();	//Builds the deck
 
 		/*
@@ -42,7 +42,7 @@ public class Game {
 			burnCard(gameDeck, nPlayers); // number of cards burned depends on the number of players
 
 			for (int i=0; i<nPlayers; i++) {
-				player[i].setPlayerHand(gameDeck.pop(), 0); //puts the top card of the deck into each players hand
+				players[i].setPlayerHand(gameDeck.pop(), 0); //puts the top card of the deck into each players hand
 			}
 
 			/*
@@ -57,10 +57,10 @@ public class Game {
 
 				Scanner scanner = new Scanner(System.in);
 				int choice = 0;
-				System.out.println("It's " + player[turnMarker].getName() + "'s turn.");
+				System.out.println("It's " + players[turnMarker].getName() + "'s turn.");
 				System.out.println("");
-				player[turnMarker].setPlayerHand(gameDeck.pop(), 1);
-				player[turnMarker].printPlayerHand();
+				players[turnMarker].setPlayerHand(gameDeck.pop(), 1);
+				players[turnMarker].printPlayerHand();
 				System.out.println("");
 
 
@@ -84,7 +84,7 @@ public class Game {
 					//return numPlayer;
 				}	
 
-				playCard(player[turnMarker], choice-1);
+				playCard(players, turnMarker, choice-1, nPlayers);
 
 
 				/*
@@ -163,7 +163,33 @@ public class Game {
 			return numPlayer;
 		}	
 	} 
+	
+	/*
+	 * Inputs the number of people playing the game and returns the player's target
+	 */
+	public static int getTarget(int p) {
+		int t = 0;
+		Scanner numObj = new Scanner(System.in);
+		do {
+			System.out.println("Which player would you like to target?");
 
+			try {
+				t = numObj.nextInt();
+				if(t <1 || t >p) {
+					System.out.println("Not a valid number!!!");
+				}
+			}
+			catch(InputMismatchException e){
+				System.out.println("That wasnt a number yo...");
+				numObj.next();
+			}
+		}while(!(t == 1 ||t == 2 || t == 3 || t == 4)); {
+			//numObj.close();
+			return t-1;
+		}	
+	} 
+	
+	
 	//prints out what card is in each index
 	public static void printDeckIndex (Card[] z){
 		for(int i = 0; i < 16;i++){
@@ -203,7 +229,7 @@ public class Game {
 	}
 
 
-	private static void playCard(Player player, int c) {
+	private static void playCard(Player[] players, int t, int c, int nPlayers) {
 		/*
 		 * //Name a non-Guard card and choose another player. If that player has that card, he or she is out of the round
 	public static void playGaurd(Player t) {}
@@ -229,14 +255,18 @@ public class Game {
 		 */
 
 
-		switch(player.getPlayerHand()[c].getVal()) {
+		switch(players[t].getPlayerHand()[c].getVal()) {
 
 		case 1:
 			System.out.println("Card is Guard");
+			
 			break;
 
 		case 2:
 			System.out.println("Card is Priest");
+			
+			System.out.println(players[getTarget(nPlayers)].getPlayerHand()[0].getName()) ;
+			
 			break;
 
 		case 3:
@@ -245,7 +275,7 @@ public class Game {
 
 		case 4:
 			System.out.println("Card is Handmaid"); //Until your next turn, ignore all effects from other player's cards
-			player.handmaid();
+			players[t].handmaid();
 			break;
 
 		case 5:
@@ -262,7 +292,7 @@ public class Game {
 
 		case 8:
 			System.out.println("Card is Princess"); // if you discard this card, you are out of the round
-			player.out();
+			players[t].out();
 			break;
 
 
@@ -270,7 +300,7 @@ public class Game {
 		System.out.println();
 
 		if (c==0) {
-			player.getPlayerHand()[0] = player.getPlayerHand()[1]; // Cards are always dealt to [1] so it just shifts it over if needed
+			players[t].getPlayerHand()[0] = players[t].getPlayerHand()[1]; // Cards are always dealt to [1] so it just shifts it over if needed
 		}
 		
 	}
