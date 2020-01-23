@@ -84,6 +84,7 @@ public class Game {
 					//return numPlayer;
 				}	
 
+				System.out.println("Player 2 has " + players[1].getPlayerHand()[0].getVal());
 				playCard(players, turnMarker, choice-1, nPlayers);
 
 
@@ -229,6 +230,10 @@ public class Game {
 	}
 
 
+	/*
+	 * t represents the current player's turn
+	 * c represents which card the player is choosing from their hand (array size of 2)
+	 */
 	private static void playCard(Player[] players, int t, int c, int nPlayers) {
 		/*
 		 * //Name a non-Guard card and choose another player. If that player has that card, he or she is out of the round
@@ -256,9 +261,38 @@ public class Game {
 
 
 		switch(players[t].getPlayerHand()[c].getVal()) {
+		
 
 		case 1:
-			System.out.println("Card is Guard");
+			
+			Player targetPlayer = players[getTarget(nPlayers)];
+			//int target = players[getTarget(nPlayers)].getPlayerHand()[0].getVal();
+			int targetCardVal = 0;
+			
+			Scanner numObj = new Scanner(System.in);
+			do {
+				System.out.println("Which card do you think " + targetPlayer.getName() + " has? Pick a number between 2 and 8");
+
+				try {
+					targetCardVal = numObj.nextInt();
+					if(targetCardVal <2 || targetCardVal >8) {
+						System.out.println("Not a valid number!!!");
+					}
+				}
+				catch(InputMismatchException e){
+					System.out.println("That wasnt a number yo...");
+					numObj.next();
+				}
+			}while(!(targetCardVal <2 || targetCardVal >8 )); {
+				//numObj.close();
+				if (targetCardVal == targetPlayer.getPlayerHand()[0].getVal()) {
+					System.out.println("That's correct!");
+					targetPlayer.out();
+				}else {
+					System.out.println("Not Quite!");
+				}
+			}	
+			
 			
 			break;
 
