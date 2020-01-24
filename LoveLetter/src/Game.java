@@ -164,7 +164,7 @@ public class Game {
 			return numPlayer;
 		}	
 	} 
-	
+
 	/*
 	 * Inputs the number of people playing the game and returns the player's target
 	 */
@@ -189,8 +189,8 @@ public class Game {
 			return t-1;
 		}	
 	} 
-	
-	
+
+
 	//prints out what card is in each index
 	public static void printDeckIndex (Card[] z){
 		for(int i = 0; i < 16;i++){
@@ -236,13 +236,10 @@ public class Game {
 	 */
 	private static void playCard(Player[] players, int t, int c, int nPlayers) {
 		/*
-		 * //Name a non-Guard card and choose another player. If that player has that card, he or she is out of the round
-	public static void playGaurd(Player t) {}
+		 * 
 
-	//Look at another player's hand
-	public static void playPriest(Player t) {
-		System.out.println(t.getName() + "has the "+ t.getPlayerHand()[0].getName());
-	}
+
+
 
 	//You and another player secretly compare hands. The player with the lower value is out of the round
 	public static void playBaron(Player p, Player t) {}
@@ -259,17 +256,59 @@ public class Game {
 		 * 
 		 */
 
-
-		switch(players[t].getPlayerHand()[c].getVal()) {
+		Scanner numObj = new Scanner(System.in);
 		
+		int targetCardVal = 0;
+		
+		Player targetPlayer = players[getTarget(nPlayers)];	
+		
+		switch(players[t].getPlayerHand()[c].getVal()) {
+
 
 		case 1:
 			
-			Player targetPlayer = players[getTarget(nPlayers)];
-			//int target = players[getTarget(nPlayers)].getPlayerHand()[0].getVal();
-			int targetCardVal = 0;
+			do {
+				System.out.println("Which card do you think " + targetPlayer.getName() + " has? Pick a number between 2 and 8");
+
+				try {
+					targetCardVal = numObj.nextInt();
+					if(targetCardVal == 1) {
+						System.out.println("Cannot guess another Guard!!!");
+						
+					}else if(targetCardVal <2 || targetCardVal >8) {
+						System.out.println("Not a valid number!!!");
+						
+					}
+				}
+				catch(InputMismatchException e){
+					System.out.println("That wasnt a number yo...");
+					numObj.next();
+				}
+			}while(targetCardVal <2 || targetCardVal >8 ); {
+				//numObj.close();
+				if (targetCardVal == targetPlayer.getPlayerHand()[0].getVal()) {
+					System.out.println("That's correct!");
+					targetPlayer.out();
+				}else {
+					System.out.println("Not Quite!");
+				}
+			}	
+
+			break;
+
+		case 2:
 			
-			Scanner numObj = new Scanner(System.in);
+			System.out.println(players[getTarget(nPlayers)].getPlayerHand()[0].getName()) ;
+
+			break;
+
+		case 3:
+			
+			 targetPlayer = players[getTarget(nPlayers)];
+
+			 targetCardVal = 0;
+
+			
 			do {
 				System.out.println("Which card do you think " + targetPlayer.getName() + " has? Pick a number between 2 and 8");
 
@@ -283,7 +322,7 @@ public class Game {
 					System.out.println("That wasnt a number yo...");
 					numObj.next();
 				}
-			}while(!(targetCardVal <2 || targetCardVal >8 )); {
+			}while(targetCardVal <2 || targetCardVal >8 ); {
 				//numObj.close();
 				if (targetCardVal == targetPlayer.getPlayerHand()[0].getVal()) {
 					System.out.println("That's correct!");
@@ -294,17 +333,6 @@ public class Game {
 			}	
 			
 			
-			break;
-
-		case 2:
-			System.out.println("Card is Priest");
-			
-			System.out.println(players[getTarget(nPlayers)].getPlayerHand()[0].getName()) ;
-			
-			break;
-
-		case 3:
-			System.out.println("Card is Baron");
 			break;
 
 		case 4:
@@ -336,9 +364,9 @@ public class Game {
 		if (c==0) {
 			players[t].getPlayerHand()[0] = players[t].getPlayerHand()[1]; // Cards are always dealt to [1] so it just shifts it over if needed
 		}
-		
+
 	}
-	
+
 }
 
 

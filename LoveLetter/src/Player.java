@@ -15,6 +15,14 @@ public class Player {
 		stillInRound = true;
 
 	}
+
+	public Player() {
+		playerName = "";
+		playerPoints = 0;
+		handmaid = false;
+		stillInRound = true;
+		
+	}
 	
 	public String getName() {
 		return playerName;
