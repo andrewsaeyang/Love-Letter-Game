@@ -251,7 +251,14 @@ public class Game {
 		
 		switch(players[t].getPlayerHand()[c].getVal()) {
 
-
+		case 8: // if you discard this card, you are out of the round
+			
+			System.out.println("You have discarded the Princess. You are out."); 
+			
+			players[t].out();
+			
+			break;
+			
 		case 1: //Player designates another player and names a type of card. If that player's hand matches the type of card specified, that player is eliminated from the round. Guard cannot be named as the type of card.
 			
 			do {
@@ -309,12 +316,14 @@ public class Game {
 				
 			}
 		
-			
 			break;
 
 		case 4:
+			
 			System.out.println("Card is Handmaid"); //Until your next turn, ignore all effects from other player's cards
+			
 			players[t].handmaid();
+			
 			break;
 
 		case 5://Choose any player (including yourself) to discard his or her hand and draw a new card
@@ -322,16 +331,15 @@ public class Game {
 			break;
 
 		case 6://Trade hands with another player of your choice
-			System.out.println("Card is King");
+			
+			Card temp = players[t].getPlayerHand()[0];
+			players[t].getPlayerHand()[0] = targetPlayer.getPlayerHand()[0] ;
+			targetPlayer.getPlayerHand()[0] = temp;
+			
 			break;
 
 		case 7://If you have this card and the King or Prince is in your hand, you must discard this card
 			System.out.println("Card is Countess");
-			break;
-
-		case 8:
-			System.out.println("Card is Princess"); // if you discard this card, you are out of the round
-			players[t].out();
 			break;
 
 
