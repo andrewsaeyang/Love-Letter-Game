@@ -231,41 +231,28 @@ public class Game {
 
 
 	/*
-	 * t represents the current player's turn
-	 * c represents which card the player is choosing from their hand (array size of 2)
+	 * players - the array containing all the players
+	 * t - represents the current player's turn
+	 * c - represents which card the player is choosing from their hand (array size of 2)
+	 * nPlayers - number of players in the game for edge cases
 	 */
 	private static void playCard(Player[] players, int t, int c, int nPlayers) {
-		/*
-		 * 
-
-
-
-
-	//You and another player secretly compare hands. The player with the lower value is out of the round
-	public static void playBaron(Player p, Player t) {}
-
-	//Choose any player (including yourself) to discard his or her hand and draw a new card
-	public static void playPrince(Player t) {}
-
-	//Trade hands with another player of your choice
-	public static void playKing(Player p, Player t) {}
-
-	//If you have this card and the King or Prince is in your hand, you must discard this card
-	public static void playCountess(Player p) {	}
-
-		 * 
-		 */
-
+	
+		
 		Scanner numObj = new Scanner(System.in);
 		
 		int targetCardVal = 0;
 		
 		Player targetPlayer = players[getTarget(nPlayers)];	
+
+		if (c==0) {
+			players[t].getPlayerHand()[0] = players[t].getPlayerHand()[1]; // Cards are always dealt to [1] so it just shifts it over if needed
+		}
 		
 		switch(players[t].getPlayerHand()[c].getVal()) {
 
 
-		case 1:
+		case 1: //Player designates another player and names a type of card. If that player's hand matches the type of card specified, that player is eliminated from the round. Guard cannot be named as the type of card.
 			
 			do {
 				System.out.println("Which card do you think " + targetPlayer.getName() + " has? Pick a number between 2 and 8");
@@ -302,36 +289,26 @@ public class Game {
 
 			break;
 
-		case 3:
+		case 3: //You and another player secretly compare hands. The player with the lower value is out of the round
 			
-			 targetPlayer = players[getTarget(nPlayers)];
 
-			 targetCardVal = 0;
-
-			
-			do {
-				System.out.println("Which card do you think " + targetPlayer.getName() + " has? Pick a number between 2 and 8");
-
-				try {
-					targetCardVal = numObj.nextInt();
-					if(targetCardVal <2 || targetCardVal >8) {
-						System.out.println("Not a valid number!!!");
-					}
-				}
-				catch(InputMismatchException e){
-					System.out.println("That wasnt a number yo...");
-					numObj.next();
-				}
-			}while(targetCardVal <2 || targetCardVal >8 ); {
-				//numObj.close();
-				if (targetCardVal == targetPlayer.getPlayerHand()[0].getVal()) {
-					System.out.println("That's correct!");
-					targetPlayer.out();
-				}else {
-					System.out.println("Not Quite!");
-				}
-			}	
-			
+			if (players[t].getPlayerHand()[0].getVal() > targetPlayer.getPlayerHand()[0].getVal()) {
+				
+				System.out.println(players[t].getName() + " has the better hand!");
+				targetPlayer.out();
+				
+			}else if(players[t].getPlayerHand()[0].getVal() < targetPlayer.getPlayerHand()[0].getVal()) {
+				
+				System.out.println(targetPlayer.getName() + " has the better hand!");
+				
+				players[t].out();
+				
+			}else {
+				
+				System.out.println("It was a tie! *Le Gasp*");
+				
+			}
+		
 			
 			break;
 
@@ -340,15 +317,15 @@ public class Game {
 			players[t].handmaid();
 			break;
 
-		case 5:
+		case 5://Choose any player (including yourself) to discard his or her hand and draw a new card
 			System.out.println("Card is Prince");
 			break;
 
-		case 6:
+		case 6://Trade hands with another player of your choice
 			System.out.println("Card is King");
 			break;
 
-		case 7:
+		case 7://If you have this card and the King or Prince is in your hand, you must discard this card
 			System.out.println("Card is Countess");
 			break;
 
@@ -361,9 +338,7 @@ public class Game {
 		}
 		System.out.println();
 
-		if (c==0) {
-			players[t].getPlayerHand()[0] = players[t].getPlayerHand()[1]; // Cards are always dealt to [1] so it just shifts it over if needed
-		}
+		
 
 	}
 
