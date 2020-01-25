@@ -8,9 +8,6 @@ import java.util.Stack;
 public class Game {
 	public static void main(String[] args) throws IOException, InterruptedException
 	{
-
-
-
 		//int nPlayers = getNumberofPLayers(); //Asks the player for how many people are playing and validates
 		//Player[] playerList = playerList(nPlayers); //creates the array storing player data for game
 
@@ -51,8 +48,6 @@ public class Game {
 			 * before looping through it will check if there is at least 2 players playing
 			 */
 
-
-
 			while(roundState == true) {
 
 				Scanner scanner = new Scanner(System.in);
@@ -62,7 +57,6 @@ public class Game {
 				players[turnMarker].setPlayerHand(gameDeck.pop(), 1);
 				players[turnMarker].printPlayerHand();
 				System.out.println("");
-
 
 				do {
 					System.out.println("Which card would you like to play?");
@@ -87,7 +81,6 @@ public class Game {
 				System.out.println("Player 2 has " + players[1].getPlayerHand()[0].getVal());
 				playCard(players, turnMarker, choice-1, nPlayers);
 
-
 				/*
 				 * Round clean up:
 				 * -check to see if more than 2 players remain in round
@@ -110,7 +103,6 @@ public class Game {
 			 */
 		}
 	}
-
 
 	private static Player[] tempPlayer() {
 		Player[] p = new Player[2];
@@ -190,7 +182,6 @@ public class Game {
 		}	
 	} 
 
-
 	//prints out what card is in each index
 	public static void printDeckIndex (Card[] z){
 		for(int i = 0; i < 16;i++){
@@ -245,10 +236,13 @@ public class Game {
 		
 		Player targetPlayer = players[getTarget(nPlayers)];	
 
-		if (c==0) {
-			players[t].getPlayerHand()[0] = players[t].getPlayerHand()[1]; // Cards are always dealt to [1] so it just shifts it over if needed
-		}
 		
+		/*
+		 * problem with putting the shift here. If index 0 is chosen, index 1 will be the card selected because the shift will occur BEFORE card has been selected and used.
+		*if (c==0) {
+		*	players[t].getPlayerHand()[0] = players[t].getPlayerHand()[1]; // Cards are always dealt to [1] so it just shifts it over if needed
+		*}
+		*/
 		switch(players[t].getPlayerHand()[c].getVal()) {
 
 		case 8: // if you discard this card, you are out of the round
@@ -287,17 +281,25 @@ public class Game {
 					System.out.println("Not Quite!");
 				}
 			}	
-
+			
+			if (c==0) {
+				players[t].getPlayerHand()[0] = players[t].getPlayerHand()[1]; // Cards are always dealt to [1] so it just shifts it over if needed
+			}
 			break;
 
 		case 2:
-			
+			if (c==0) {
+				players[t].getPlayerHand()[0] = players[t].getPlayerHand()[1]; // Cards are always dealt to [1] so it just shifts it over if needed
+			}		
 			System.out.println(players[getTarget(nPlayers)].getPlayerHand()[0].getName()) ;
 
 			break;
 
 		case 3: //You and another player secretly compare hands. The player with the lower value is out of the round
 			
+			if (c==0) {
+				players[t].getPlayerHand()[0] = players[t].getPlayerHand()[1]; // Cards are always dealt to [1] so it just shifts it over if needed
+			}
 
 			if (players[t].getPlayerHand()[0].getVal() > targetPlayer.getPlayerHand()[0].getVal()) {
 				
@@ -318,19 +320,29 @@ public class Game {
 		
 			break;
 
-		case 4:
-			
-			System.out.println("Card is Handmaid"); //Until your next turn, ignore all effects from other player's cards
+		case 4://Until your next turn, ignore all effects from other player's cards
 			
 			players[t].handmaid();
+			
+			if (c==0) {
+				players[t].getPlayerHand()[0] = players[t].getPlayerHand()[1]; // Cards are always dealt to [1] so it just shifts it over if needed
+			}
 			
 			break;
 
 		case 5://Choose any player (including yourself) to discard his or her hand and draw a new card
+			
+			if (c==0) {
+				players[t].getPlayerHand()[0] = players[t].getPlayerHand()[1]; // Cards are always dealt to [1] so it just shifts it over if needed
+			}
+			
 			System.out.println("Card is Prince");
 			break;
 
 		case 6://Trade hands with another player of your choice
+			if (c==0) {
+				players[t].getPlayerHand()[0] = players[t].getPlayerHand()[1]; // Cards are always dealt to [1] so it just shifts it over if needed
+			}
 			
 			Card temp = players[t].getPlayerHand()[0];
 			players[t].getPlayerHand()[0] = targetPlayer.getPlayerHand()[0] ;
@@ -339,6 +351,11 @@ public class Game {
 			break;
 
 		case 7://If you have this card and the King or Prince is in your hand, you must discard this card
+			
+			if (c==0) {
+				players[t].getPlayerHand()[0] = players[t].getPlayerHand()[1]; // Cards are always dealt to [1] so it just shifts it over if needed
+			}
+			
 			System.out.println("Card is Countess");
 			break;
 
