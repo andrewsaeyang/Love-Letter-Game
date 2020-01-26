@@ -78,6 +78,8 @@ public class Game {
 					turnMarker = 0;
 				}
 
+				System.out.println("=========================================");
+				
 				/*
 				 * TODO: Check to see if more than 2 players remain in round (adjusts active player count)
 				 * TODO: Check to see if there are cards remaining in the deck
@@ -156,23 +158,30 @@ public class Game {
 	/*
 	 * Inputs the number of people playing the game and returns the player's target
 	 */
-	public static int getTarget(int p) {
+	public static int getTarget(int p, int currentPlayer) {
 		int t = 0;
-		Scanner numObj = new Scanner(System.in);
+		Scanner numObj1 = new Scanner(System.in);
 		do {
 			System.out.println("Which player would you like to target?");
 
 			try {
-				t = numObj.nextInt();
-				if(t <1 || t >p) {
+				t = numObj1.nextInt();
+				
+				if(t-1 == currentPlayer) {
+					
+					System.out.println("You cannot target your self! Please Select a valid player.");
+					
+				}else if (t < 1 || t > p) {
+					
 					System.out.println("Not a valid number!!!");
+					
 				}
 			}
 			catch(InputMismatchException e){
 				System.out.println("That wasnt a number yo...");
-				numObj.next();
+				numObj1.next();
 			}
-		}while(!(t == 1 ||t == 2 || t == 3 || t == 4)); {
+		}while(!(t-1 == currentPlayer && (t<1 || t>p))); {
 			//numObj.close();
 			return t-1;
 		}	
@@ -249,6 +258,17 @@ public class Game {
 	 * nPlayers - number of players in the game for edge cases
 	 * h - whether or not all targets have handmaid active
 	 */
+	
+	
+	
+	/*
+	 * Cards that can't target yourself:
+	 * 1, 2, 3, 6 
+	 * 
+	 * its okay, 4
+	 * 
+	 * 5 target yourself
+	 */
 	private static void playCard(Player[] players, int t, int c, int nPlayers, boolean h, Stack<Card> gameDeck) {
 
 
@@ -278,7 +298,7 @@ public class Game {
 
 			if(h == false) {
 				do {
-					targetPlayer = players[getTarget(nPlayers)];	
+					targetPlayer = players[getTarget(nPlayers, t)];	
 					System.out.println("Which card do you think " + targetPlayer.getName() + " has? Pick a number between 2 and 8");
 
 					try {
@@ -316,7 +336,7 @@ public class Game {
 		case 2:
 
 			if(h==false) {
-				targetPlayer = players[getTarget(nPlayers)];
+				targetPlayer = players[getTarget(nPlayers, t)];
 				if (c==0) {
 					players[t].getPlayerHand()[0] = players[t].getPlayerHand()[1]; // Cards are always dealt to [1] so it just shifts it over if needed
 				}		
@@ -335,7 +355,7 @@ public class Game {
 			}
 
 			if(h==false) {
-				targetPlayer = players[getTarget(nPlayers)];
+				targetPlayer = players[getTarget(nPlayers, t)];
 				if (players[t].getPlayerHand()[0].getVal() > targetPlayer.getPlayerHand()[0].getVal()) {
 
 					System.out.println(players[t].getName() + " has the better hand!");
@@ -407,7 +427,7 @@ public class Game {
 		case 6://Trade hands with another player of your choice
 
 			if(h==false) {
-				targetPlayer = players[getTarget(nPlayers)];
+				targetPlayer = players[getTarget(nPlayers, t)];
 
 				if (c==0) {
 					players[t].getPlayerHand()[0] = players[t].getPlayerHand()[1]; // Cards are always dealt to [1] so it just shifts it over if needed
