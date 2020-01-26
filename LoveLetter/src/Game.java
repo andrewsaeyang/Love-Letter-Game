@@ -17,15 +17,6 @@ public class Game {
 		Stack<Card> gameDeck = DeckBuilder.buildDeck();	//Builds the deck
 
 		/*
-		 * GAME START
-		 * 
-		 * Steps brain storming:
-		 * use numPLayer to build the active players into array
-		 * deal to players in the array
-		 * 
-		 */
-
-		/*
 		 * Main loop for the game structure. 
 		 * This level will take care of re-shuffling of the deck, resetting player state to active, and burning cards
 		 * before looping through it will check if any players have hit the win condition
@@ -34,6 +25,7 @@ public class Game {
 		boolean gameState = true;
 		boolean roundState = true;
 		int turnMarker = 0;
+		int activePlayers = nPlayers;
 
 		while(gameState == true) {
 			burnCard(gameDeck, nPlayers); // number of cards burned depends on the number of players
@@ -78,28 +70,32 @@ public class Game {
 					//return numPlayer;
 				}	
 
-				System.out.println("Player 2 has " + players[1].getPlayerHand()[0].getVal());
-				playCard(players, turnMarker, choice-1, nPlayers);
+				System.out.println("Player 2 has " + players[1].getPlayerHand()[0].getVal()); // for testing purpose
+				playCard(players, turnMarker, choice-1, nPlayers, handmaidCheck(players, nPlayers), gameDeck);
+				if(turnMarker != nPlayers-1) {
+					turnMarker++;
+				}else {
+					turnMarker = 0;
+				}
 
 				/*
-				 * Round clean up:
-				 * -check to see if more than 2 players remain in round
-				 * -check to see if there are cards remaining in the deck
-				 * -push cards in player array to the left (if possible)
-				 * 
+				 * TODO: Check to see if more than 2 players remain in round (adjusts active player count)
+				 * TODO: Check to see if there are cards remaining in the deck
+				 * TODO: Go to next player
+				 * TODO: Check for if player has countess along with prince or King
 				 */
 
 			}
 			break;
 			/*
-			 * Game clean up:
-			 * -Award round winner point
-			 * -Check game winning condition
-			 * --if winner applicable, announce winner
-			 * -Shuffle deck
-			 * -Deal new card
-			 * -Reset player info(still in round status, hand maid status, hand)
-			 * -display leader board
+			 * TODO: Game clean up:
+			 * TODO: Check game winning condition
+			 * TODO: ->if winner applicable, announce winner and end game.
+			 * TODO: Shuffle deck
+			 * TODO: Deal new card
+			 * TODO: Reset player info(still in round status, hand maid status, hand)
+			 * TODO: Display leader board
+			 *
 			 */
 		}
 	}
@@ -222,140 +218,216 @@ public class Game {
 
 
 	/*
+	 * n being number of players in the game
+	 * This method determines the status of "Handmaid" among all the players.
+	 * If there is any instance where everyone but 1 player has the "Handmaid" status active,
+	 * The active player is limited on their action depending on their card. The active player
+	 * will never have "Handmaid" active so of the active statuses will always be targets (which cannot be targeted) 
+	 */
+	public static boolean handmaidCheck(Player[] p, int n) { 
+
+		int maidCount = 0;
+
+		for (int i = 0; i < n; i++) {
+			if (p[i].getHandmaid() == true) {
+				maidCount++;
+			}
+		}
+
+		if(maidCount == n-1) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+
+	/*TODO: Add logic so you can't target your self...
 	 * players - the array containing all the players
 	 * t - represents the current player's turn
 	 * c - represents which card the player is choosing from their hand (array size of 2)
 	 * nPlayers - number of players in the game for edge cases
+	 * h - whether or not all targets have handmaid active
 	 */
-	private static void playCard(Player[] players, int t, int c, int nPlayers) {
-	
-		
-		Scanner numObj = new Scanner(System.in);
-		
-		int targetCardVal = 0;
-		
-		Player targetPlayer = players[getTarget(nPlayers)];	
+	private static void playCard(Player[] players, int t, int c, int nPlayers, boolean h, Stack<Card> gameDeck) {
 
-		
+
+		Scanner numObj = new Scanner(System.in);
+
+		int targetCardVal = 0;
+		Player targetPlayer = new Player();
 		/*
 		 * problem with putting the shift here. If index 0 is chosen, index 1 will be the card selected because the shift will occur BEFORE card has been selected and used.
-		*if (c==0) {
-		*	players[t].getPlayerHand()[0] = players[t].getPlayerHand()[1]; // Cards are always dealt to [1] so it just shifts it over if needed
-		*}
-		*/
+		 *if (c==0) {
+		 *	players[t].getPlayerHand()[0] = players[t].getPlayerHand()[1]; // Cards are always dealt to [1] so it just shifts it over if needed
+		 *}
+		 */
+
+		//TODO: Add a check for if Handmaid is active when 2 players remain
 		switch(players[t].getPlayerHand()[c].getVal()) {
 
 		case 8: // if you discard this card, you are out of the round
-			
-			System.out.println("You have discarded the Princess. You are out."); 
-			
-			players[t].out();
-			
-			break;
-			
-		case 1: //Player designates another player and names a type of card. If that player's hand matches the type of card specified, that player is eliminated from the round. Guard cannot be named as the type of card.
-			
-			do {
-				System.out.println("Which card do you think " + targetPlayer.getName() + " has? Pick a number between 2 and 8");
 
-				try {
-					targetCardVal = numObj.nextInt();
-					if(targetCardVal == 1) {
-						System.out.println("Cannot guess another Guard!!!");
-						
-					}else if(targetCardVal <2 || targetCardVal >8) {
-						System.out.println("Not a valid number!!!");
-						
+			System.out.println(players[t].getName() + " has discarded the Princess. They are out of the round."); 
+
+			players[t].out();
+
+			break;
+
+		case 1: //Player designates another player and names a type of card. If that player's hand matches the type of card specified, that player is eliminated from the round. Guard cannot be named as the type of card.
+
+			if(h == false) {
+				do {
+					targetPlayer = players[getTarget(nPlayers)];	
+					System.out.println("Which card do you think " + targetPlayer.getName() + " has? Pick a number between 2 and 8");
+
+					try {
+						targetCardVal = numObj.nextInt();
+						if(targetCardVal == 1) {
+							System.out.println("Cannot guess another Guard!!!");
+
+						}else if(targetCardVal <2 || targetCardVal >8) {
+							System.out.println("Not a valid number!!!");
+
+						}
+					}
+					catch(InputMismatchException e){
+						System.out.println("That wasnt a number yo...");
+						numObj.next();
+					}
+				}while(targetCardVal <2 || targetCardVal >8 ); {
+					//numObj.close();
+					if (targetCardVal == targetPlayer.getPlayerHand()[0].getVal()) {
+						System.out.println("That's correct!");
+						targetPlayer.out();
+					}else {
+						System.out.println("Not Quite!");
 					}
 				}
-				catch(InputMismatchException e){
-					System.out.println("That wasnt a number yo...");
-					numObj.next();
-				}
-			}while(targetCardVal <2 || targetCardVal >8 ); {
-				//numObj.close();
-				if (targetCardVal == targetPlayer.getPlayerHand()[0].getVal()) {
-					System.out.println("That's correct!");
-					targetPlayer.out();
-				}else {
-					System.out.println("Not Quite!");
-				}
-			}	
-			
+
+			}else{
+				System.out.println("The are no valid targets. Skipping turn");
+			}
 			if (c==0) {
 				players[t].getPlayerHand()[0] = players[t].getPlayerHand()[1]; // Cards are always dealt to [1] so it just shifts it over if needed
 			}
 			break;
 
 		case 2:
-			if (c==0) {
-				players[t].getPlayerHand()[0] = players[t].getPlayerHand()[1]; // Cards are always dealt to [1] so it just shifts it over if needed
-			}		
-			System.out.println(players[getTarget(nPlayers)].getPlayerHand()[0].getName()) ;
 
+			if(h==false) {
+				targetPlayer = players[getTarget(nPlayers)];
+				if (c==0) {
+					players[t].getPlayerHand()[0] = players[t].getPlayerHand()[1]; // Cards are always dealt to [1] so it just shifts it over if needed
+				}		
+				System.out.println(targetPlayer.getPlayerHand()[0].getName()) ;
+			}else {
+				System.out.println("The are no valid targets. Skipping turn");
+			}
 			break;
 
 		case 3: //You and another player secretly compare hands. The player with the lower value is out of the round
-			
+
+
+
 			if (c==0) {
 				players[t].getPlayerHand()[0] = players[t].getPlayerHand()[1]; // Cards are always dealt to [1] so it just shifts it over if needed
 			}
 
-			if (players[t].getPlayerHand()[0].getVal() > targetPlayer.getPlayerHand()[0].getVal()) {
-				
-				System.out.println(players[t].getName() + " has the better hand!");
-				targetPlayer.out();
-				
-			}else if(players[t].getPlayerHand()[0].getVal() < targetPlayer.getPlayerHand()[0].getVal()) {
-				
-				System.out.println(targetPlayer.getName() + " has the better hand!");
-				
-				players[t].out();
-				
+			if(h==false) {
+				targetPlayer = players[getTarget(nPlayers)];
+				if (players[t].getPlayerHand()[0].getVal() > targetPlayer.getPlayerHand()[0].getVal()) {
+
+					System.out.println(players[t].getName() + " has the better hand!");
+					targetPlayer.out();
+
+				}else if(players[t].getPlayerHand()[0].getVal() < targetPlayer.getPlayerHand()[0].getVal()) {
+
+					System.out.println(targetPlayer.getName() + " has the better hand!");
+
+					players[t].out();
+
+				}else {
+
+					System.out.println("It was a tie! *Le Gasp*");
+
+				}
 			}else {
-				
-				System.out.println("It was a tie! *Le Gasp*");
-				
+				System.out.println("The are no valid targets. Skipping turn");
 			}
-		
 			break;
 
 		case 4://Until your next turn, ignore all effects from other player's cards
-			
+
 			players[t].handmaid();
-			
+
 			if (c==0) {
 				players[t].getPlayerHand()[0] = players[t].getPlayerHand()[1]; // Cards are always dealt to [1] so it just shifts it over if needed
 			}
-			
+			System.out.println(players[t].getName() + " has played Handmaid. They cannot be targeted until the beginning of thier next turn.");
 			break;
 
 		case 5://Choose any player (including yourself) to discard his or her hand and draw a new card
-			
+
+			int temp = 0;
+			do {
+				System.out.println("Which player would you like to target?");
+
+				try {
+					temp = numObj.nextInt();
+					if(temp <0 || temp >nPlayers) {
+						System.out.println("Not a valid number!!!");
+					}
+				}
+				catch(InputMismatchException e){
+					System.out.println("That wasnt a number yo...");
+					numObj.next();
+				}
+			}while(!(temp <0 || temp >nPlayers)); {
+				//numObj.close();
+			}	
+
 			if (c==0) {
 				players[t].getPlayerHand()[0] = players[t].getPlayerHand()[1]; // Cards are always dealt to [1] so it just shifts it over if needed
 			}
 			
+			// if the target player is discarding a princess, they are out of the round, otherwise, card is discarded and new hand is drawn.
+			if(players[temp].getPlayerHand()[0].getVal()==8) {
+				players[temp].out();
+				break;
+			}else {
+				players[temp].getPlayerHand()[0] = gameDeck.pop();
+			}
+
+
+
 			System.out.println("Card is Prince");
 			break;
 
 		case 6://Trade hands with another player of your choice
-			if (c==0) {
-				players[t].getPlayerHand()[0] = players[t].getPlayerHand()[1]; // Cards are always dealt to [1] so it just shifts it over if needed
+
+			if(h==false) {
+				targetPlayer = players[getTarget(nPlayers)];
+
+				if (c==0) {
+					players[t].getPlayerHand()[0] = players[t].getPlayerHand()[1]; // Cards are always dealt to [1] so it just shifts it over if needed
+				}
+
+				Card tCard = players[t].getPlayerHand()[0];
+				players[t].getPlayerHand()[0] = targetPlayer.getPlayerHand()[0] ;
+				targetPlayer.getPlayerHand()[0] = tCard;
+			}else {
+
+				System.out.println("The are no valid targets. Skipping turn");
 			}
-			
-			Card temp = players[t].getPlayerHand()[0];
-			players[t].getPlayerHand()[0] = targetPlayer.getPlayerHand()[0] ;
-			targetPlayer.getPlayerHand()[0] = temp;
-			
 			break;
 
 		case 7://If you have this card and the King or Prince is in your hand, you must discard this card
-			
+
 			if (c==0) {
 				players[t].getPlayerHand()[0] = players[t].getPlayerHand()[1]; // Cards are always dealt to [1] so it just shifts it over if needed
 			}
-			
+
 			System.out.println("Card is Countess");
 			break;
 
@@ -363,7 +435,7 @@ public class Game {
 		}
 		System.out.println();
 
-		
+
 
 	}
 
