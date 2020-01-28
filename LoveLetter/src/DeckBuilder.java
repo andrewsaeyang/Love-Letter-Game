@@ -35,8 +35,8 @@ public class DeckBuilder {
 			cardNum = file.nextInt();
 			cardQuantity = file.nextInt();
 			cardName = file.next();
-			cardDescription = file.nextLine();
-
+			cardDescription = file.next();
+			file.nextLine();
 			/*
 			 * This for loop is creating the multiple copies of the cards with variable "q" being quantity
 			 */
