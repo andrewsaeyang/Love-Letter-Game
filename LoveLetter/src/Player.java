@@ -82,5 +82,10 @@ public class Player {
 		stillInRound = true;
 	}
 
+	public void resetHandmaid() {
+		handmaid = false;
+		
+	}
+
 
 }

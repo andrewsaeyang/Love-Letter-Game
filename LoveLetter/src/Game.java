@@ -44,6 +44,7 @@ public class Game {
 
 				Scanner scanner = new Scanner(System.in);
 				int choice = 0;
+				players[turnMarker].resetHandmaid();
 				System.out.println("It's " + players[turnMarker].getName() + "'s turn.");
 				System.out.println("");
 				players[turnMarker].setPlayerHand(gameDeck.pop(), 1);
@@ -70,8 +71,10 @@ public class Game {
 					//return numPlayer;
 				}	
 
-				System.out.println("Player 2 has " + players[1].getPlayerHand()[0].getVal()); // for testing purpose
+				//System.out.println("Player 2 has " + players[1].getPlayerHand()[0].getVal()); // for testing purpose
+				
 				playCard(players, turnMarker, choice-1, nPlayers, handmaidCheck(players, nPlayers), gameDeck);
+				
 				if(turnMarker != nPlayers-1) {
 					turnMarker++;
 				}else {
@@ -181,10 +184,10 @@ public class Game {
 				System.out.println("That wasnt a number yo...");
 				numObj1.next();
 			}
-		}while(!(t-1 == currentPlayer && (t<1 || t>p))); {
+		}while(t-1 == currentPlayer|| t < 1||t > p); 
 			//numObj.close();
 			return t-1;
-		}	
+			
 	} 
 
 	//prints out what card is in each index
@@ -297,8 +300,10 @@ public class Game {
 		case 1: //Player designates another player and names a type of card. If that player's hand matches the type of card specified, that player is eliminated from the round. Guard cannot be named as the type of card.
 
 			if(h == false) {
+				
+				targetPlayer = players[getTarget(nPlayers, t)];
 				do {
-					targetPlayer = players[getTarget(nPlayers, t)];	
+						
 					System.out.println("Which card do you think " + targetPlayer.getName() + " has? Pick a number between 2 and 8");
 
 					try {
@@ -315,7 +320,8 @@ public class Game {
 						System.out.println("That wasnt a number yo...");
 						numObj.next();
 					}
-				}while(targetCardVal <2 || targetCardVal >8 ); {
+				}while(targetCardVal < 2 || targetCardVal > 8 );
+				
 					//numObj.close();
 					if (targetCardVal == targetPlayer.getPlayerHand()[0].getVal()) {
 						System.out.println("That's correct!");
@@ -323,7 +329,7 @@ public class Game {
 					}else {
 						System.out.println("Not Quite!");
 					}
-				}
+				
 
 			}else{
 				System.out.println("The are no valid targets. Skipping turn");
@@ -391,11 +397,11 @@ public class Game {
 
 			int temp = 0;
 			do {
-				System.out.println("Which player would you like to target?");
+				System.out.println("Which player should discard thier hand?");
 
 				try {
 					temp = numObj.nextInt();
-					if(temp <0 || temp >nPlayers) {
+					if(temp < 0 || temp >nPlayers) {
 						System.out.println("Not a valid number!!!");
 					}
 				}
@@ -403,15 +409,13 @@ public class Game {
 					System.out.println("That wasnt a number yo...");
 					numObj.next();
 				}
-			}while(!(temp <0 || temp >nPlayers)); {
-				//numObj.close();
-			}	
-
+			}while(!(temp <0 || temp >nPlayers)); 
 			if (c==0) {
 				players[t].getPlayerHand()[0] = players[t].getPlayerHand()[1]; // Cards are always dealt to [1] so it just shifts it over if needed
 			}
 			
 			// if the target player is discarding a princess, they are out of the round, otherwise, card is discarded and new hand is drawn.
+			temp--; // ie. player 2 is index 1
 			if(players[temp].getPlayerHand()[0].getVal()==8) {
 				players[temp].out();
 				break;
