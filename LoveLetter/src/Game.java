@@ -43,33 +43,18 @@ public class Game {
 			while(roundState == true) {
 
 				Scanner scanner = new Scanner(System.in);
-				int choice = 0;
+				
 				players[turnMarker].resetHandmaid();
 				System.out.println("It's " + players[turnMarker].getName() + "'s turn.");
 				System.out.println("");
 				players[turnMarker].setPlayerHand(gameDeck.pop(), 1);
+				
 				players[turnMarker].printPlayerHand();
 				System.out.println("");
 
-				do {
-					System.out.println("Which card would you like to play?");
-					System.out.println("Card 1 or 2?");
+				int choice = getCardChoice(countessCheck(players[turnMarker].getPlayerHand()), players[turnMarker]);
 
-					try {
-						choice = scanner.nextInt();
-						if(!(choice == 2 || choice == 1)) {
-							System.out.println("Not a valid choice!!!");
-							System.out.println("Please choose 1 or 2.");
-						}
-					}
-					catch(InputMismatchException e){
-						System.out.println("That wasnt a number yo...");
-						scanner.next();
-					}
-				}while(!(choice == 2 || choice == 1)); {
-
-					//return numPlayer;
-				}	
+				
 
 				//System.out.println("Player 2 has " + players[1].getPlayerHand()[0].getVal()); // for testing purpose
 
@@ -105,6 +90,9 @@ public class Game {
 		}
 	}
 
+
+
+	//TEST CASE FOR 2 PLAYER GAME
 	private static Player[] tempPlayer() {
 		Player[] p = new Player[2];
 		p[0] = new Player("Andrew");
@@ -195,6 +183,65 @@ public class Game {
 
 	} 
 
+	public static int getCardChoice(boolean b, Player p) {
+		int choice = 0;
+		
+		Scanner scanner = new Scanner(System.in);
+		
+		if(b) {
+
+			do {
+				System.out.println("Which card would you like to play?");
+				System.out.println("Card 1 or 2?");
+
+				try {
+					choice = scanner.nextInt();
+					
+					
+					if(choice <1 || choice >2) {
+						System.out.println("Not a valid choice!!!");
+						System.out.println("Please choose 1 or 2.");
+						
+					}else if(p.getPlayerHand()[choice-1].getVal() == 5 || p.getPlayerHand()[choice-1].getVal() == 6) {
+						
+						System.out.println("You cannot play this card while you have the Countess in your hand!");
+
+					}
+
+				}
+				catch(InputMismatchException e){
+					System.out.println("That wasnt a number yo...");
+					scanner.next();
+				}
+			}while(choice < 1 || choice > 2 ||p.getPlayerHand()[choice-1].getVal() == 5 || p.getPlayerHand()[choice-1].getVal() == 6); 
+			
+			
+		}else {
+
+			do {
+				System.out.println("Which card would you like to play?");
+				System.out.println("Card 1 or 2?");
+
+				try {
+					choice = scanner.nextInt();
+					if(!(choice == 2 || choice == 1)) {
+						System.out.println("Not a valid choice!!!");
+						System.out.println("Please choose 1 or 2.");
+					}
+
+				}
+				catch(InputMismatchException e){
+					System.out.println("That wasnt a number yo...");
+					scanner.next();
+				}
+			}while(!(choice == 2 || choice == 1));
+			
+		}
+		
+		
+		return choice;
+	}
+	
 	//prints out what card is in each index
 	public static void printDeckIndex (Card[] z){
 		for(int i = 0; i < 16;i++){
@@ -256,6 +303,24 @@ public class Game {
 		}else {
 			return false;
 		}
+	}
+
+	public static boolean countessCheck(Card[] hand) {
+
+		boolean retVal = false;
+
+		if(hand[0].getVal() == 7 ||hand[1].getVal() == 7) {
+
+			for(int i = 0; i <2; i++) {
+
+				if(hand[i].getVal() == 5 || hand[i].getVal() == 6 ) {
+					
+					retVal = true;
+				}
+			}
+		}
+
+		return retVal;
 	}
 
 
@@ -488,20 +553,12 @@ public class Game {
 				players[t].getPlayerHand()[0] = players[t].getPlayerHand()[1]; // Cards are always dealt to [1] so it just shifts it over if needed
 			}
 
-			System.out.println("Card is Countess");
 			break;
 
-
 		}
+		
 		System.out.println();
-
-
 
 	}
 
 }
-
-
-
-
-
