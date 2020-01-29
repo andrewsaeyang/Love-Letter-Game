@@ -44,7 +44,7 @@ int choice = 0;
 						System.out.println("You cannot play this card while you have the Countess in your hand!");
 
 					}
-					
+					 
 
 				}
 				catch(InputMismatchException e){

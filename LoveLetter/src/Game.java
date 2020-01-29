@@ -33,7 +33,7 @@ public class Game {
 			for (int i=0; i<nPlayers; i++) {
 				players[i].setPlayerHand(gameDeck.pop(), 0); //puts the top card of the deck into each players hand
 			}
-
+ 
 			/*
 			 * this loop will be the the bulk of the playing 
 			 * this level includes: drawing from the deck, playing cards and eliminating players in order to give player points
