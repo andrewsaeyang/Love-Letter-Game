@@ -86,6 +86,11 @@ public class Player {
 		handmaid = false;
 		
 	}
+	
+	public int getHandVal() {
+		
+		return playerHand[0].getVal();
+	}
 
 
 }

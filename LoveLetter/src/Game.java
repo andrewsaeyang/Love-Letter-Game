@@ -63,8 +63,15 @@ public class Game {
 
 
 				if(lastPlayer(players)) {
-					System.out.println("THERE IS A WINNNERRRRRRRRRRRRRRRRRRRR");
-					System.out.println("breaking....");
+
+					roundWin(players);
+
+					roundState = false;
+
+				}else if (gameDeck.isEmpty()) {
+
+					findWinner(players);
+
 					roundState = false;
 				}
 
@@ -97,6 +104,18 @@ public class Game {
 			 */
 		}
 	}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -190,26 +209,30 @@ public class Game {
 	 * Inputs the number of people playing the game and returns the player's target
 	 */
 	public static int getTarget(int p, int currentPlayer, Player[] players) { //FIXME: choose 0 for guard > error
+
 		int t = 0;
+
 		Scanner numObj1 = new Scanner(System.in);
+
 		do {
+
 			System.out.println("Which player would you like to target?");
 
 			try {
+
 				t = numObj1.nextInt();
 
 				if(t-1 == currentPlayer) {
 
 					System.out.println("You cannot target your self! Please Select a valid player.");
 
-				}else if(players[t-1].getRoundInfo() == false) {
-
-					System.out.println("This player is already out of the round.");
-
-
 				}else if (t < 1 || t > p) {
 
 					System.out.println("Not a valid number!!!");
+
+				}else if(players[t-1].getRoundInfo() == false) {
+
+					System.out.println("This player is already out of the round.");
 
 				}else if(players[t-1].getHandmaid() == true){
 
@@ -396,6 +419,80 @@ public class Game {
 		return retVal;
 
 	}
+
+	/*
+	 * Only one player will have their .getRoundInfo be true at this point of the game. Awards point to winner of round.
+	 */
+	private static void roundWin(Player[] players) {
+
+		for(int i = 0; i < players.length; i++) {
+
+			if(players[i].getRoundInfo() == true) {
+				
+				System.out.println("**********************************************");
+				System.out.println(players[i].getName() + " has won the round!" );
+				players[i].win();
+				System.out.println("**********************************************");
+
+			}
+		}
+	}
+
+	private static void findWinner(Player[] players) {
+
+
+		int temp = 0;
+
+		//find out how many players left in the round
+		for(int i = 0; i< players.length; i++) {
+
+			if(players[i].getRoundInfo()==true) {
+
+				temp++;
+			}
+
+		}
+
+		int temp2 = 0;
+
+		Player[] compare = new Player[temp];
+
+		//put remaining players into an appropriate sized array
+		for(int i = 0; i< temp; i++) {
+
+			if(players[i].getRoundInfo()==true) {
+
+				compare[temp2] = players[i];
+				temp2++;
+
+			}
+
+		}
+
+		Player winner = compare [0];
+
+		//compare everyone left in the array 
+
+		for(int i = 1; i < temp2; i++) {
+
+			if(winner.getHandVal() < compare[i].getHandVal() ) {
+				winner = compare[i];
+			}
+		}
+
+		System.out.println("**********************************************");
+		System.out.println(winner.getName() + " has won the round!" );
+		winner.win();
+		System.out.println("**********************************************");
+		
+
+		for(int i = 0; i < compare.length; i++) {
+			
+			System.out.println(compare[i].getName() + " had the " + compare[i].getPlayerHand()[0].getName());
+			
+		}
+	}
+
 
 	/*
 	 * players - the array containing all the players
