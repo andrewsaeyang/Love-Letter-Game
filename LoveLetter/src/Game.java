@@ -355,13 +355,13 @@ public class Game {
 	public static boolean handmaidCheck(Player[] p, int n) { 
 
 		int maidCount = 0;
-		
-		
+
+
 		for (int i = 0; i < p.length ; i++) {
 			if (p[i].getRoundInfo() == false) {
 				n -= 1;
 			}
-			
+
 		}
 
 		for (int i = 0; i < n; i++) {
@@ -423,7 +423,7 @@ public class Game {
 		for(int i = 0; i < players.length; i++) {
 
 			if(players[i].getRoundInfo() == true) {
-				
+
 				System.out.println("**********************************************");
 				System.out.println(players[i].getName() + " has won the round!" );
 				players[i].win();
@@ -479,12 +479,12 @@ public class Game {
 		System.out.println(winner.getName() + " has won the round!" );
 		winner.win();
 		System.out.println("**********************************************");
-		
+
 
 		for(int i = 0; i < compare.length; i++) {
-			
+
 			System.out.println(compare[i].getName() + " had the " + compare[i].getPlayerHand()[0].getName());
-			
+
 		}
 	}
 
@@ -669,8 +669,18 @@ public class Game {
 
 						System.out.println("Not a valid number!!!");
 
+					}else if(players[temp-1].getRoundInfo() == false) {
+
+						System.out.println("This player is already out of the round.");
+
+					}else if(players[temp-1].getHandmaid() == true){
+
+						System.out.println("Cannot target this player. Handmaid is in effect until the beginning of thier turn.");
+
 					}
+
 				}
+
 
 				catch(InputMismatchException e){
 
@@ -679,7 +689,8 @@ public class Game {
 					numObj1.next();
 				}
 
-			}while(temp < 1||temp > nPlayers); 
+			}while(temp < 1 || temp > nPlayers || players[temp-1].getRoundInfo() == false
+					|| players[temp-1].getHandmaid() == true); 
 
 			if (c==0) {
 
