@@ -106,19 +106,6 @@ public class Game {
 	}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 	public static int nextTurn(int turn, Player[] players){
 
 		/*
@@ -368,6 +355,14 @@ public class Game {
 	public static boolean handmaidCheck(Player[] p, int n) { 
 
 		int maidCount = 0;
+		
+		
+		for (int i = 0; i < p.length ; i++) {
+			if (p[i].getRoundInfo() == false) {
+				n -= 1;
+			}
+			
+		}
 
 		for (int i = 0; i < n; i++) {
 
