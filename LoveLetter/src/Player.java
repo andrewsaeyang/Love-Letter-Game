@@ -35,8 +35,8 @@ public class Player {
 		return playerPoints;
 	}
 
-	public void setPlayerPoints(String p) {
-		playerName = p;
+	public void setPlayerPoints(int p) {
+		playerPoints = p;
 	}
 
 	public void handmaid() {

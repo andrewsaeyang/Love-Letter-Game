@@ -27,6 +27,13 @@ public class Game {
 		int turnMarker = 0;
 		int activePlayers = nPlayers;
 
+
+
+		for(int j = 0; j < nPlayers; j++) {
+			players[j].setPlayerPoints(4);
+
+		}
+
 		while(gameState == true) {
 			burnCard(gameDeck, nPlayers); // number of cards burned depends on the number of players
 
@@ -60,8 +67,6 @@ public class Game {
 
 				playCard(players, turnMarker, choice-1, nPlayers, handmaidCheck(players, nPlayers), gameDeck);
 
-
-
 				if(lastPlayer(players)) {
 
 					roundWin(players);
@@ -90,8 +95,9 @@ public class Game {
 
 			}
 
-			System.out.println("YEAH NEW ROUND!");
-			break;
+			gameState = checkForWinner(players, nPlayers);
+
+
 			/*
 			 * TODO: Game clean up:
 			 * TODO: Check game winning condition
@@ -103,6 +109,52 @@ public class Game {
 			 *
 			 */
 		}
+	}
+
+
+
+
+	private static boolean checkForWinner(Player[] players, int nPlayers) {
+
+		boolean retVal = true;
+		int win = 0;
+
+		switch(nPlayers) {
+
+		case 2:
+			win = 7;
+			break;
+		case 3:
+			win = 5;
+			break;
+		case 4:
+			win = 4;
+			break;
+		}
+
+		for(int i = 0; i <nPlayers; i++) {//TODO: will search entire array. not optimal
+
+			if(players[i].getPlayerPoints() == win) {
+
+				System.out.println(players[i].getName() +" Wins the game with " + win + " points!");						
+	
+				retVal = false;
+
+			}
+		}
+
+		System.out.println();
+		System.out.println("=========================================");
+
+		for(int j = 0; j < nPlayers; j++) {
+			System.out.println(players[j].getName() + " had " + players[j].getPlayerPoints() + " points.");
+		}
+		System.out.println("=========================================");
+		System.out.println();
+
+
+		return retVal;
+
 	}
 
 
@@ -424,10 +476,10 @@ public class Game {
 
 			if(players[i].getRoundInfo() == true) {
 
-				System.out.println("**********************************************");
+				System.out.println("*****************************************");
 				System.out.println(players[i].getName() + " has won the round!" );
 				players[i].win();
-				System.out.println("**********************************************");
+				System.out.println("*****************************************");
 
 			}
 		}
@@ -475,10 +527,10 @@ public class Game {
 			}
 		}
 
-		System.out.println("**********************************************");
+		System.out.println("*****************************************");
 		System.out.println(winner.getName() + " has won the round!" );
 		winner.win();
-		System.out.println("**********************************************");
+		System.out.println("*****************************************");
 
 
 		for(int i = 0; i < compare.length; i++) {
