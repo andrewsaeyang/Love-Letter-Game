@@ -5,17 +5,18 @@ import java.util.Scanner;
 import java.util.Stack;
 
 
+
 public class Game {
 	public static void main(String[] args) throws IOException, InterruptedException
 	{
-		//int nPlayers = getNumberofPLayers(); //Asks the player for how many people are playing and validates
-		//Player[] playerList = playerList(nPlayers); //creates the array storing player data for game
+		int nPlayers = getNumberofPLayers(); //Asks the player for how many people are playing and validates
+		Player[] players = playerList(nPlayers); //creates the array storing player data for game
 
 
-		int nPlayers = 3;
-		Player[] players = tempPlayer();
-		Stack<Card> gameDeck = DeckBuilder.buildDeck();	//Builds the deck
-
+		//int nPlayers = 3; TEST CASE
+		//Player[] players = tempPlayer();
+		
+		
 		/*
 		 * Main loop for the game structure. 
 		 * This level will take care of re-shuffling of the deck, resetting player state to active, and burning cards
@@ -25,16 +26,23 @@ public class Game {
 		boolean gameState = true;
 		boolean roundState = true;
 		int turnMarker = 0;
-		int activePlayers = nPlayers;
 
-
-
-		for(int j = 0; j < nPlayers; j++) {
-			players[j].setPlayerPoints(4);
-
-		}
 
 		while(gameState == true) {
+
+			if(roundState == false) {
+				roundState = true;
+				turnMarker = 0;	
+				for (int i=0; i<nPlayers; i++) {
+					players[i].reset();
+				}
+
+			}
+
+
+
+			Stack<Card> gameDeck = DeckBuilder.buildDeck();	//Builds the deck
+
 			burnCard(gameDeck, nPlayers); // number of cards burned depends on the number of players
 
 			for (int i=0; i<nPlayers; i++) {
@@ -49,11 +57,15 @@ public class Game {
 
 			while(roundState == true) {
 
+
+
 				Scanner scanner = new Scanner(System.in);
 
 				players[turnMarker].resetHandmaid();
+
 				System.out.println("It's " + players[turnMarker].getName() + "'s turn.");
 				System.out.println("");
+
 				players[turnMarker].setPlayerHand(gameDeck.pop(), 1);
 
 				players[turnMarker].printPlayerHand();
@@ -83,31 +95,12 @@ public class Game {
 				turnMarker = nextTurn(turnMarker, players);
 
 				System.out.println("=========================================");
-
-
-				/*
-				 * 
-				 * TODO: Check to see if more than 2 players remain in round (adjusts active player count)
-				 * TODO: Check to see if there are cards remaining in the deck
-				 * TODO: Go to next player
-				 * TODO: Check for if player has countess along with prince or King
-				 */
+				System.out.println("");
 
 			}
 
 			gameState = checkForWinner(players, nPlayers);
 
-
-			/*
-			 * TODO: Game clean up:
-			 * TODO: Check game winning condition
-			 * TODO: ->if winner applicable, announce winner and end game.
-			 * TODO: Shuffle deck
-			 * TODO: Deal new card
-			 * TODO: Reset player info(still in round status, hand maid status, hand)
-			 * TODO: Display leader board
-			 *
-			 */
 		}
 	}
 
@@ -137,7 +130,7 @@ public class Game {
 			if(players[i].getPlayerPoints() == win) {
 
 				System.out.println(players[i].getName() +" Wins the game with " + win + " points!");						
-	
+
 				retVal = false;
 
 			}
@@ -202,7 +195,7 @@ public class Game {
 			//Ask for Player name
 			p[i] = new Player(name.next());
 		}
-		name.close();
+		
 		return p;
 	}
 
@@ -407,11 +400,11 @@ public class Game {
 	public static boolean handmaidCheck(Player[] p, int n) { 
 
 		int maidCount = 0;
-
+		int playersLeft = n;
 
 		for (int i = 0; i < p.length ; i++) {
 			if (p[i].getRoundInfo() == false) {
-				n -= 1;
+				playersLeft -= 1;
 			}
 
 		}
@@ -424,7 +417,7 @@ public class Game {
 			}
 		}
 
-		if(maidCount == n-1) {
+		if(maidCount == playersLeft-1) {
 			return true;
 		}else {
 			return false;
@@ -703,7 +696,7 @@ public class Game {
 
 			break;
 
-		case 5://Choose any player (including yourself) to discard his or her hand and draw a new card
+		case 5://Choose any player (including yourself) to discard his or her hand and draw a new card FIXME: Case when player needs to draw and deck is empty
 
 			int temp = 0;
 
