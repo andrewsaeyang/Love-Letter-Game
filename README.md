@@ -2,7 +2,8 @@
 
 This is my very first project that I have completed. I wasn't focused on it being user friendly, it was an exercise to get used to Java and to break down the game logically and turn it into code. There are probably some edge cases that I am still missing, and some logic that could slightly off, but over all I am happy with what I built. 
 
-Objective of the game
+Objective of the game:
+
 Each player has one card in their hand. They take turns drawing one card from the deck the playing the card, resolving that action. Players are able to knock each other out of the round, or if the deck runs out, who ever has the highest value card wins the round is awarded a point. Rack up as many points as you can to win the game!
 
 The deck contains
