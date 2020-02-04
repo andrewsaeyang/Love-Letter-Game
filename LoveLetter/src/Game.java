@@ -15,8 +15,8 @@ public class Game {
 
 		//int nPlayers = 3; TEST CASE
 		//Player[] players = tempPlayer();
-		
-		
+
+
 		/*
 		 * Main loop for the game structure. 
 		 * This level will take care of re-shuffling of the deck, resetting player state to active, and burning cards
@@ -43,7 +43,7 @@ public class Game {
 
 			Stack<Card> gameDeck = DeckBuilder.buildDeck();	//Builds the deck
 
-			burnCard(gameDeck, nPlayers); // number of cards burned depends on the number of players
+			Card burnCard = burnCard(gameDeck, nPlayers); // number of cards burned depends on the number of players
 
 			for (int i=0; i<nPlayers; i++) {
 				players[i].setPlayerHand(gameDeck.pop(), 0); //puts the top card of the deck into each players hand
@@ -77,7 +77,7 @@ public class Game {
 
 				//System.out.println("Player 2 has " + players[1].getPlayerHand()[0].getVal()); // for testing purpose
 
-				playCard(players, turnMarker, choice-1, nPlayers, handmaidCheck(players, nPlayers), gameDeck);
+				playCard(players, turnMarker, choice-1, nPlayers, handmaidCheck(players, nPlayers), gameDeck, burnCard);
 
 				if(lastPlayer(players)) {
 
@@ -195,24 +195,29 @@ public class Game {
 			//Ask for Player name
 			p[i] = new Player(name.next());
 		}
-		
+
 		return p;
 	}
 
-	public static void burnCard(Stack<Card> n, int p) {
+	public static Card burnCard(Stack<Card> n, int p) {
+
+		Card retVal = n.pop();
+
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~ ");
-		if( p == 2) {
+
+		if(p == 2) {
 			System.out.println("The three cards burned are: ");
 			for (int i=0; i <3;i++) {
 				System.out.println(n.pop().getName());
 
 			}
-		}else {
+		}else{
 			System.out.println("burning one card.");
-			n.pop();
 		}
 
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~ ");
+
+		return retVal;
 	}
 
 	public static int getNumberofPLayers() {
@@ -540,9 +545,10 @@ public class Game {
 	 * c - represents which card the player is choosing from their hand (array size of 2)
 	 * nPlayers - number of players in the game for edge cases
 	 * h - whether or not all targets have handmaid active
+	 * bc - burned card
 	 */
 
-	private static void playCard(Player[] players, int t, int c, int nPlayers, boolean h, Stack<Card> gameDeck) {
+	private static void playCard(Player[] players, int t, int c, int nPlayers, boolean h, Stack<Card> gameDeck, Card bc) {
 
 
 		Scanner numObj = new Scanner(System.in);
@@ -604,7 +610,7 @@ public class Game {
 				//numObj.close();
 				if (targetCardVal == targetPlayer.getPlayerHand()[0].getVal()) {
 
-					System.out.println("That's correct!");
+					System.out.println("That's correct!" + targetPlayer.getName() + " is out of the round!");
 					targetPlayer.out();
 
 				}else {
@@ -696,7 +702,7 @@ public class Game {
 
 			break;
 
-		case 5://Choose any player (including yourself) to discard his or her hand and draw a new card FIXME: Case when player needs to draw and deck is empty
+		case 5://Choose any player (including yourself) to discard his or her hand and draw a new card 
 
 			int temp = 0;
 
@@ -755,12 +761,14 @@ public class Game {
 
 				players[temp].out();
 
-			}else {
+			}else if(gameDeck.isEmpty()) {
+
+				players[temp].getPlayerHand()[0] = bc;
+
+			}else{
 
 				players[temp].getPlayerHand()[0] = gameDeck.pop();
 			}
-
-
 
 			break;
 
