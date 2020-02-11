@@ -57,8 +57,6 @@ public class Game {
 
 			while(roundState == true) {
 
-
-
 				Scanner scanner = new Scanner(System.in);
 
 				players[turnMarker].resetHandmaid();
@@ -72,7 +70,6 @@ public class Game {
 				System.out.println("");
 
 				int choice = getCardChoice(countessCheck(players[turnMarker].getPlayerHand()), players[turnMarker]);
-
 
 
 				//System.out.println("Player 2 has " + players[1].getPlayerHand()[0].getVal()); // for testing purpose
@@ -103,8 +100,6 @@ public class Game {
 
 		}
 	}
-
-
 
 
 	private static boolean checkForWinner(Player[] players, int nPlayers) {
@@ -220,6 +215,7 @@ public class Game {
 		return retVal;
 	}
 
+	
 	public static int getNumberofPLayers() {
 		int numPlayer = 0;
 		Scanner numObj = new Scanner(System.in);
@@ -242,8 +238,13 @@ public class Game {
 		}	
 	} 
 
-	/*
-	 * Inputs the number of people playing the game and returns the player's target
+
+	/** Gets the target of the active player's choice
+	 * 
+	 * @param p Int of the number of players in the game
+	 * @param currentPlayer index of active player
+	 * @param players All the players in the game
+	 * @return Int of the index of the active player's target
 	 */
 	public static int getTarget(int p, int currentPlayer, Player[] players) { //FIXME: choose 0 for guard > error
 
@@ -290,10 +291,12 @@ public class Game {
 
 	} 
 
-	/*
-	 * If the active player has the Countess card along with the King or Prince card,
-	 * they must play the Countess card. boolean "b" is the the state if the player is
-	 * required the play the Countess or not.
+		
+	/** Method that returns the index of which card the active player wishes to play
+	 * 
+	 * @param b Boolean of if the player has a Countess card and a King or Prince in their hand
+	 * @param p The active player
+	 * @return
 	 */
 	public static int getCardChoice(boolean b, Player p) {
 		int choice = 0;
@@ -353,7 +356,10 @@ public class Game {
 		return choice;
 	}
 
-	//prints out what card is in each index
+	/** Prints out what card is in each index
+	 * 
+	 * @param z Array of Cards
+	 */
 	public static void printDeckIndex (Card[] z){
 		for(int i = 0; i < 16;i++){
 			if(z[i]==null){
@@ -367,11 +373,11 @@ public class Game {
 
 	}
 
-	/*The shuffle method for the game
+
+	/** Shuffles the game deck
 	 * 
-	 * https://learnappmaking.com/shuffling-array-swift-explained/
-	 * https://www.youtube.com/watch?v=tLxBwSL3lPQ
-	 * 
+	 * @param z The array storing all the cards in the game
+	 * @return an array of the all the cards shuffled and ready to play
 	 */
 	public static Card[] shuffleDeck (Card[] z){
 
@@ -402,6 +408,13 @@ public class Game {
 	 * The active player is limited on their action depending on their card. The active player
 	 * will never have "Handmaid" active so of the active statuses will always be targets (which cannot be targeted) 
 	 */
+	
+	/**Checks the number of Handmaids activated to determine if the turn needs to be skipped
+	 * 
+	 * @param p The array of Players currently in the game
+	 * @param n The number of active Players remaining
+	 * @return A boolean representing if there are no targets because everyone else has Handmaids active
+	 */
 	public static boolean handmaidCheck(Player[] p, int n) { 
 
 		int maidCount = 0;
@@ -411,7 +424,6 @@ public class Game {
 			if (p[i].getRoundInfo() == false) {
 				playersLeft -= 1;
 			}
-
 		}
 
 		for (int i = 0; i < n; i++) {
@@ -429,6 +441,11 @@ public class Game {
 		}
 	}
 
+	/** Checks to see if the active player has the Countess as well as either the Prince or King in their hand
+	 * 
+	 * @param hand The active player's hand
+	 * @return A boolean determining if the player is required to play the Countess
+	 */
 	public static boolean countessCheck(Card[] hand) {
 
 		boolean retVal = false;
@@ -447,6 +464,11 @@ public class Game {
 		return retVal;
 	}
 
+	/** Checks all the Players' stillInRound status 
+	 * 
+	 * @param players The array of Players in the game
+	 * @return A boolean to determine if there are enough players to continue playing
+	 */
 	public static boolean lastPlayer(Player[] players) {
 		boolean retVal = false;
 		int out = 0;
@@ -468,6 +490,11 @@ public class Game {
 	/*
 	 * Only one player will have their .getRoundInfo be true at this point of the game. Awards point to winner of round.
 	 */
+	
+	/** Displays the winner of the round when all but one player is knocked out of the round
+	 * 
+	 * @param players The array of players in the game
+	 */
 	private static void roundWin(Player[] players) {
 
 		for(int i = 0; i < players.length; i++) {
@@ -483,8 +510,11 @@ public class Game {
 		}
 	}
 
+	/** Finds the winner of the round between the remaining players left by comparing card values
+	 * 
+	 * @param players The array of players in the game
+	 */
 	private static void findWinner(Player[] players) {
-
 
 		int temp = 0;
 
@@ -495,7 +525,6 @@ public class Game {
 
 				temp++;
 			}
-
 		}
 
 		int temp2 = 0;
@@ -511,7 +540,6 @@ public class Game {
 				temp2++;
 
 			}
-
 		}
 
 		Player winner = compare [0];
@@ -539,15 +567,18 @@ public class Game {
 	}
 
 
-	/*
-	 * players - the array containing all the players
-	 * t - represents the current player's turn
-	 * c - represents which card the player is choosing from their hand (array size of 2)
-	 * nPlayers - number of players in the game for edge cases
-	 * h - whether or not all targets have handmaid active
-	 * bc - burned card
-	 */
 
+	/** Plays the card of the active player's choice
+	 * 
+	 * @param players The array of players in the game
+	 * @param t Int of which index is the current player
+	 * @param c Int of the active players card choice in their hand
+	 * @param nPlayers Int if players in the game
+	 * @param h Boolean if the active player's turn must be skipped
+	 * @param gameDeck Stack<Card> which is the deck used the play the game
+	 * @param bc The burned card at the beginning of the game
+	 * 
+	 */
 	private static void playCard(Player[] players, int t, int c, int nPlayers, boolean h, Stack<Card> gameDeck, Card bc) {
 
 
@@ -561,10 +592,6 @@ public class Game {
 		 *	players[t].getPlayerHand()[0] = players[t].getPlayerHand()[1]; // Cards are always dealt to [1] so it just shifts it over if needed
 		 *}
 		 */
-
-
-
-
 
 		switch(players[t].getPlayerHand()[c].getVal()) {
 
@@ -731,7 +758,6 @@ public class Game {
 					}
 
 				}
-
 
 				catch(InputMismatchException e){
 
