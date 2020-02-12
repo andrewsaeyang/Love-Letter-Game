@@ -5,17 +5,23 @@ import java.util.Scanner;
 import java.util.Stack;
 
 
-
+/**
+ * 
+ * @author Andrew Saeyang
+ *
+ */
 public class Game {
+	
+	/**
+	 * 
+	 * @param args
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
 	public static void main(String[] args) throws IOException, InterruptedException
 	{
 		int nPlayers = getNumberofPLayers(); //Asks the player for how many people are playing and validates
 		Player[] players = playerList(nPlayers); //creates the array storing player data for game
-
-
-		//int nPlayers = 3; TEST CASE
-		//Player[] players = tempPlayer();
-
 
 		/*
 		 * Main loop for the game structure. 
@@ -101,7 +107,12 @@ public class Game {
 		}
 	}
 
-
+/** Checks to see if there is a winner for the game. Will output the winner and their score.
+ * 
+ * @param players
+ * @param nPlayers
+ * @return A boolean value representing if the game is over
+ */
 	private static boolean checkForWinner(Player[] players, int nPlayers) {
 
 		boolean retVal = true;
@@ -120,7 +131,7 @@ public class Game {
 			break;
 		}
 
-		for(int i = 0; i <nPlayers; i++) {//TODO: will search entire array. not optimal
+		for(int i = 0; i <nPlayers; i++) {//TODO: will search entire array. not optimal?
 
 			if(players[i].getPlayerPoints() == win) {
 
@@ -145,14 +156,13 @@ public class Game {
 
 	}
 
-
+/**Moves turn marker to the next player, if they are out, it moves the marker again.
+ * 
+ * @param turn The current player's turn.
+ * @param players The array containing all the player info.
+ * @return Which player turn it is.
+ */
 	public static int nextTurn(int turn, Player[] players){
-
-		/*
-		 * Moves turn marker to the next player,
-		 * if they are out, it moves the marker again.
-		 * 
-		 */
 
 		do {
 			if(turn != players.length -1 ) {
@@ -165,22 +175,17 @@ public class Game {
 
 			}
 
-
 		} while(players[turn].getRoundInfo() == false) ;
 
 		return turn;
 	}
 
 
-	//TEST CASE FOR 2 PLAYER GAME
-	private static Player[] tempPlayer() {
-		Player[] p = new Player[3];
-		p[0] = new Player("Andrew");
-		p[1] = new Player("Josh");
-		p[2] = new Player("Carl");
-		return p;
-	}
-
+	/** Asks for each players name.
+	 * 
+	 * @param n The number of players in the game.
+	 * @return An array containing all the players' name filled out.
+	 */
 	public static Player[] playerList(int n) {
 		Scanner name = new Scanner(System.in);
 		Player[] p = new Player[n];
@@ -194,6 +199,12 @@ public class Game {
 		return p;
 	}
 
+	/** Will burn one card from the deck and reveal three more cards if there are only two players
+	 * 
+	 * @param n The game deck that has already been shuffled
+	 * @param p The number of players in the game
+	 * @return A card that is burned from the deck
+	 */
 	public static Card burnCard(Stack<Card> n, int p) {
 
 		Card retVal = n.pop();
@@ -215,7 +226,10 @@ public class Game {
 		return retVal;
 	}
 
-	
+	/**
+	 * 
+	 * @return The number of players that will play the game.
+	 */
 	public static int getNumberofPLayers() {
 		int numPlayer = 0;
 		Scanner numObj = new Scanner(System.in);
@@ -296,7 +310,7 @@ public class Game {
 	 * 
 	 * @param b Boolean of if the player has a Countess card and a King or Prince in their hand
 	 * @param p The active player
-	 * @return
+	 * @return int value that is the index of the player's card choice
 	 */
 	public static int getCardChoice(boolean b, Player p) {
 		int choice = 0;
@@ -370,7 +384,6 @@ public class Game {
 						" is " + z[i].getName() );
 			}         
 		}
-
 	}
 
 
@@ -392,22 +405,10 @@ public class Game {
 			z[z.length-i] = temp;
 
 		}
-		/* 
-		 * prints array to test
-		 * printDeckIndex(z);
-		 * System.out.println("================================");
-		 */
+		
 		return z;
 	}
 
-
-	/*
-	 * n being number of players in the game
-	 * This method determines the status of "Handmaid" among all the players.
-	 * If there is any instance where everyone but 1 player has the "Handmaid" status active,
-	 * The active player is limited on their action depending on their card. The active player
-	 * will never have "Handmaid" active so of the active statuses will always be targets (which cannot be targeted) 
-	 */
 	
 	/**Checks the number of Handmaids activated to determine if the turn needs to be skipped
 	 * 
@@ -487,9 +488,6 @@ public class Game {
 
 	}
 
-	/*
-	 * Only one player will have their .getRoundInfo be true at this point of the game. Awards point to winner of round.
-	 */
 	
 	/** Displays the winner of the round when all but one player is knocked out of the round
 	 * 

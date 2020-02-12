@@ -1,4 +1,9 @@
 
+/**
+ * 
+ * @author Andrew Saeyang
+ *
+ */
 public class Player {
 	private boolean handmaid = false;
 	private boolean stillInRound = true;
@@ -7,7 +12,6 @@ public class Player {
 	private Card[] playerHand = new Card[2];
 
 	
-
 	public Player(String n) {
 		playerName = n;
 		playerPoints = 0;
@@ -57,6 +61,7 @@ public class Player {
 	public Card[] getPlayerHand() {
 		return playerHand;
 	}
+	
 	public void printPlayerHand() {
 		for (int i=0; i< playerHand.length; i++) {
 			if (playerHand[i] == null) {
@@ -65,10 +70,14 @@ public class Player {
 				System.out.println(playerHand[i].info());
 			}
 		}
-		
-		
+				
 	}
-	//index 0 will be player current hand, index 1 is new card
+	
+	/** The method to store the newly drawn card.
+	 * 
+	 * @param n The card being drawn
+	 * @param slot which index to set the card
+	 */
 	public void setPlayerHand(Card n, int slot) {
 		playerHand[slot] = n;
 	}

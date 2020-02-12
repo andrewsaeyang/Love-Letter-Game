@@ -1,3 +1,8 @@
+/**
+ * 
+ * @author Andrew Saeyang
+ *
+ */
 
 public class Card {
 	// instance variables - replace the example below with your own
@@ -22,7 +27,7 @@ public class Card {
 	public Card() {
 	};
 
-	//copy method, not sure why i made this lol
+	//copy method
 	public Card (Card that) {
 
 		this(that.getVal(),that.getQuan(),that.getName(),that.getDesc()); 

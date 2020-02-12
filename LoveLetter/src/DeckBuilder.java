@@ -1,15 +1,19 @@
-
 import java.io.*;
 import java.util.Scanner;
 import java.util.Stack;
 import java.util.Random;
+
+/**
+ * 
+ * @author Andrew saeyang
+ *
+ */
 public class DeckBuilder {
 
 	public static Stack<Card> buildDeck() throws IOException
 	{
 
 		File vanilla = new File("LLDeck.txt");
-
 
 		Card[] deck = new Card[16]; // initiate the deck array
 		Stack<Card> gameDeck = new Stack<Card>();
@@ -23,9 +27,6 @@ public class DeckBuilder {
 		int cardQuantity = 0;
 		String cardName =" ";
 		String cardDescription = " ";
-
-
-		//Card guard = new Card(p,q,n,d); //Card obj constructor
 
 		/*This while loops is able to build an array of card objects
 		 *while while pulling them from the text file
@@ -46,21 +47,9 @@ public class DeckBuilder {
 				b++;
 			}
 
-			/* 
-			 * TEST CODE
-			 */
-			//System.out.print(file.next()+" ");//Card power
-			//System.out.print(file.next()+" ");// number of cards
-			//System.out.print(file.next()+" ");//name
-			//System.out.println(file.next());//description
-
-		}
+			}
 		file.close(); //gotta close them files!
-
-		//printDeckIndex(deck);
-		//System.out.println(); // Spaces out line in the prompt
-		//System.out.println("===================================================================");
-
+		
 		//Now that the deck[] array is built, time to shuffle!
 		deck = shuffleDeck(deck);
 		//printDeckIndex(deck);
@@ -77,12 +66,15 @@ public class DeckBuilder {
 		 * GAME SETUP DONE
 		 */
 
-
 		return gameDeck;
 
 	}
 
-	//prints out what card is in each index
+	
+	/** Prints out what card is in each index. Used for testing purposes.
+	 * 
+	 * @param The game deck
+	 */
 	public static void printDeckIndex (Card[] z){
 		for(int i = 0; i < 16;i++){
 			if(z[i]==null){
@@ -95,12 +87,15 @@ public class DeckBuilder {
 		}
 
 	}
-
-	/*The shuffle method for the game
+	 
+	/**The shuffle method for the game
 	 * 
 	 * https://learnappmaking.com/shuffling-array-swift-explained/
 	 * https://www.youtube.com/watch?v=tLxBwSL3lPQ
+	 *
 	 * 
+	 * @param z The array containing the deck
+	 * @return An array of the shuffled deck
 	 */
 	public static Card[] shuffleDeck (Card[] z){
 		Random rand = new Random();
@@ -112,11 +107,7 @@ public class DeckBuilder {
 			z[z.length-i] = temp;
 
 		}
-		/* 
-		 * prints array to test
-		 * printDeckIndex(z);
-		 * System.out.println("================================");
-		 */
+	
 		return z;
 	}
 }
